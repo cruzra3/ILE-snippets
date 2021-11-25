@@ -1,0 +1,776 @@
+ /TITLE  Snipets and other useful techniques
+  *******************************************************************
+  *  OBJECT CREATE PARAMETERS
+  *                        *******************
+  *       LOWER CASE 'l' AND 's' MUST NOT BE CHANGED
+  ***************************************
+  *******************************************************************
+  *#     PGM
+  *#  CRTRPGPGM PGM(llllllllll/SNIPETS)       +
+  *#      SRCFILE(ssssssssss/QRPGLESRC) REPLACE(*YES)
+  *#     ENDPGM
+  *******************************************************************
+ 
+  *---------------------------------------------------------------------
+  *
+  *  
+  *                           
+  *                   ALL RIGHTS RESERVED
+  *---------------------------------------------------------------------
+ 
+  * Copyright is claimed in both the underlying computer program
+  * and the resulting output in the form of an audiovisual work.
+  * This document contains unpublished, confidential and
+  * proprietary information of .
+  * No disclosure or use of any portion of these materials may
+  * be made without the express written consent of 
+  * .
+  *---------------------------------------------------------------------
+  * FILE NAME     : SNIPETS
+  * DESCRIPTION   : Useful code, tips and techniques
+  * CREATION DATE : 03/26/98
+  * PROGRAMMER    : Rafael Angel Cruz
+  *
+  * PURPOSE       : This program is a kind of storage of useful tips
+  *                 and techniques.
+  *
+ 
+  *---------------------------------------------------------------------
+  * Maintenance Log
+  *---------------------------------------------------------------------
+  * Proj#  Pgmr    Date    Description
+  * -----  ----  --------  ---------------------------------------------
+  * R3     RAC   03/26/98  INITIAL CREATION
+  *---------------------------------------------------------------------
+  * PROGRAM DOCUMENTATION
+  *---------------------------------------------------------------------
+  *---------------------------------------------------------------------
+  * SUBROUTINE INDEX:
+  *---------------------------------------------------------------------
+
+  *---------------------------------------------------------------------
+  * FIELD PREFIX STANDARD
+  *---------------------------------------------------------------------
+ 
+  * A#     - Compile Time Arrary
+  * AE     - Generic Data Base Field
+  * C#     - Constant
+  * D#     - Data structure also D1-9
+  * H#     - Hold Fields (also H1-9)
+  * I#     - Input Parameter
+  * O#     - Output Parameter
+  * P#     - Printer Field
+  * Q?     - Screen i.e. Q1comp Q2comp etc.
+  * W#     - Work Field and flags
+  * @      - System Information Retrieved
+  * LDA    - *LDA Fields
+  *
+ 
+  *---------------------------------------------------------------------
+  * Files
+  *---------------------------------------------------------------------
+ DPAYH           E DS                  EXTNAME( ACCPAYH )
+ 
+  * Company Profile Master
+ FCP001L    IF   E           K DISK    INFDS(SampleDS)
+ 
+  * Vendor Settlement Detail Print File
+ FCR072S1   O    E             PRINTER INFDS(Prinfo1)
+ 
+  * Vendor Settlement Summary Print File
+ FCR072S2   O    E             PRINTER INFDS(Prinfo2)		
+                
+  *---------------------------------------------------------------------
+  * Tables
+  *---------------------------------------------------------------------
+ 
+  * Compile time table
+ D Tabcode         S              2    Dim (50)
+ D                                     Ascend
+ D                                     CtData
+ D                                     PerRcd (4)
+ 
+  * Pre-runtime Table of 50 states, one code per record, ascending
+ D Tabcode         S              2    Dim      (50)
+ D                                     FromFile (States)
+ D                                     PerRcd   (1)
+ D                                     Ascend
+ 
+  * Pre-runtime Table of 50 states, one code per record, ascending
+  * table file to be rewritten at end of processing.
+ D Tabcode         S              2    Dim      (50)
+ D                                     FromFile (States)
+ D                                     ToFile   (States)
+ D                                     PerRcd   (1)
+ D                                     Ascend
+ 
+  * Input table file of state codes with one code per record
+ FStates    IT   F    2        DISK
+ 
+  * Input table file of 50 state codes, with one code per record
+  * records to be rewritten at end of processing
+ FStates    CT   F    2        DISK
+ 
+  *---------------------------------------------------------------------
+  * Arrays
+  *---------------------------------------------------------------------
+ 
+  * Run time array (data structure for converting sales fields to array
+  * elements).
+ D                 Ds
+ D SlsAry                        10S 2 Dim (12)
+ D JanSales                1     10S 2
+ D FebSales               11     20S 2
+ D MarSales               21     30S 2
+ D AprSales               31     40S 2
+ D MaySales               41     50S 2
+ D JunSales               51     60S 2
+ D JulSales               61     70S 2
+ D AugSales               71     80S 2
+ D SepSales               81     90S 2
+ D OctSales               91    100S 2
+ D NovSales              101    110S 2
+ D DecSales              111    120S 2
+ 
+  * Run time array (data structure for converting sales fields to array
+  * elements).  Another way.
+ D                 Ds
+ D Sales                   1    120A
+ D SlsAry                  1    120S 2 Dim (12)
+ 
+  * Run time array (data structure for converting sales fields to array
+  * elements).  Another way again
+ D                 Ds
+ D SlsAry                  1    120S 2 Dim (12)
+ D Sales                   1    120A
+ 
+  *---------------------------------------------------------------------
+  * DATA STRUCTURES
+  *---------------------------------------------------------------------
+ 
+  * Job Data Structure
+ D                SDS
+ D  @Job                 244    253
+ D  @User                254    263
+ D  @Jobn                264    269  0
+ D  @Date                276    281  0
+ D  @Time                282    287  0
+ D  @Pgmnam          *PROC
+ D  @MsgTxt              117    170
+ 
+  * Detail Printer File DS
+ DPrinfo1          DS
+ D  @Over#1              188    189B 0
+ D  @Line#1              367    368B 0
+ D  @Page#1              369    372B 0
+  * Sample DS
+ DSampleDS         DS
+ D  W#FileName             1      8
+ 
+  * W#FileOpenInd if equal 1 file is open
+ D  W#FileOpenInd          9      9
+ 
+  * W#EOFInd if equal 1 then it is (End of file)
+ D  W#EOFInd              10     10
+  * Detail Accummulators
+ DW#               DS
+ D  W#TotSale                          Like( W#Dollar )
+ 
+ 
+ D D1Lda         E DS                  EXTNAME(ExdsCr067r) Prefix(LDA:3)
+ 
+  * Date Validation
+ D D4Sy144       E DS                  EXTNAME(ExdsSy144r)
+ 
+  * User Preference
+ D DSSet         E DS                  EXTNAME(ExdsSy156r)
+ 
+  * Vendor Address
+  * PREFIX(YE:3) would change the field name 'YTDTOTAL' to 'YETOTAL'. 
+ D D6Sy159       E DS                  EXTNAME(ExdsSy159r) INZ Prefix(D6:2)
+ 
+  *---------------------------------------------------------------------
+  * WORKFIELDS DEFINITIONS
+  *---------------------------------------------------------------------
+ 
+ D W#Cymd          S              7S 0
+ D W#Mdy           S              6S 0
+ D W#DetailPrint   S                   Like( LdaPtdt )					
+ D  ACCT3          S                   LIKE(CBDBCD)           
+ D  DEPT           S              4                           
+ D  MAJ            S              3                           
+ D  MIN            S              3                           
+ D  NUM1           S              5  0                        
+ D  NUM2           S              5  0                        
+ D  F20            S             20                           
+ D  F6             S              6                           
+ 
+  *---------------------------------------------------------------------
+  * CONSTANT DEFINITIONS
+  *---------------------------------------------------------------------
+ 
+ D CopyRight       C                   CONST('Copyright + +
+ D                                     , +
+ D                                     1998')
+ D @JobName        C                   CONST('CR072C    ')
+ D @MSQUS          C                   CONST('*EXT      ')
+ D @MSTYS          C                   CONST('*STATUS   ')
+ D @MSQUE          C                   CONST('*         ')
+ D @MSTYP          C                   CONST('*DIAG     ')
+ D @MSRMV          C                   CONST('*ALL      ')
+ D @TRIMSG         C                   CONST('TRIMSG    *LIBL     ')
+ D @CPFMSG         C                   CONST('QCPFMSG   *LIBL     ')
+ 
+  *---------------------------------------------------------------------
+  * MAINLINE OF PROGRAM
+  *---------------------------------------------------------------------
+ 
+ C                   If        W#ReadMode = 'BCH'
+ C                   Exsr      GetPyByBat
+ C                   Else
+ C                   Exsr      GetPyByTrnr
+ C                   Endif
+ 
+ C                   Eval      I#Return = *Blank
+ C                   Eval      *Inlr = *ON
+ 
+  *---------------------------------------------------------------------
+  * END OF MAINLINE
+  *---------------------------------------------------------------------
+ 
+  *---------------------------------------------------------------------
+ C     GetPyByBat#   BEGSR
+ 
+  *                  Use the batch number to access the PY file
+  *---------------------------------------------------------------------
+ 
+ C     Pyky01        Setll     PyMstp
+ C     Pyky01        Reade     PyMstp                                 89
+ 
+ C     *in89         Doweq     *off
+ C                   Exsr      DetRec
+ C     Pyky01        Reade     PyMstp                                 89
+ C                   Enddo
+ 
+ C                   Endsr
+ 
+ 
+  *---------------------------------------------------------------------
+ C     *Inzsr        BEGSR
+ 
+  *                  This is the initialization routine
+  *                  it contain all key lists.  It also defines
+  *                  some work fields.
+  *---------------------------------------------------------------------
+ 
+  * Passed Parameters
+ C     *ENTRY        PLIST
+ C                   PARM                    I#Bch             5
+ C                   PARM                    I#Trnr           11
+ C                   PARM                    I#Vchr            9
+ 
+ C     *DTAARA       DEFINE    GBLDTA        DSSET
+ C     *DTAARA       DEFINE    *LDA          D1LDA
+ 
+  * Retrieve Data Areas
+ C                   IN        DSSET
+ C                   IN        D1LDA
+ 
+  *                  Get the company profile information
+ C     LdaComp       CHAIN     CP001L                             98
+ 
+  *                  Convert System Date to User preferred format.
+ 
+ C                   Eval      I2Actn   = '2'
+ C                   MOVEL     '*CUR'        I2Fdt1
+ C                   Eval      I2TFmt   = 'CYYMMDD'
+ C                   EXSR      VldDte
+ 
+ C                   IF        I2Eror   = *Zero
+ C                   Clear                   W#Cymd
+ C                   Move      I2tdt1        W#Cymd
+ C                   Endif
+ 
+ C                   Eval      I2Actn   = '2'
+ C                   MOVEL     '*CUR'        I2Fdt1
+ C                   Eval      I2TFmt   = 'MMDDYY'
+ C                   EXSR      VldDte
+ 
+ C                   IF        I2Eror   = *Zero
+ C                   Clear                   W#Mdy
+ C                   Move      I2tdt1        W#Mdy
+ C                   Endif
+ 
+  * Key lists
+ 
+  * PyMstp  key by BCH
+ C     PyKy01        KLIST
+ C                   KFLD                    W#PyBch
+ 
+ 
+ C                   Endsr
+ 
+  *-----------------------------------------------------------------------
+  * Using Named Indicators
+  *-----------------------------------------------------------------------
+ 
+ DTrue             C                   *On
+ DSflClear         C                   '100'
+ DSflDspCtl        C                   '010'
+ DSflDsp           C                   '001'
+ DSflDspBoth       C                   '011'
+ DIndicators       DS                  Based(IndicatorP)
+ D  CstNotFnd             21     21
+ D  SflAction             31     33
+ D  SoundAlarm            39     39
+ D  RecNotFound           87     87
+ D  EndOfFile             89     89
+ DIndicatorP       S               *   Inz(%Addr(*In))
+ C     Cstkey        Chain     Customer                           21
+ C                   If        CstNotFound = True
+ C                   Eval      SoundAlarm  = True
+ C                   Eval      SflAction   = SflDspBoth
+ C                   Write     CtlR
+  *-----------------------------------------------------------------------
+  * Using Named Hex Constants for function keys
+  *-----------------------------------------------------------------------
+ FDisplay   CF   E             WORKSTN KINFDS WSDS
+ DWSDS             DS
+ D KEY                   369    369A
+ D @F01            C                   CONST(X'31')
+ D @F02            C                   CONST(X'32')
+ D @F03            C                   CONST(X'33')
+ D @F04            C                   CONST(X'34')
+ D @F05            C                   CONST(X'35')
+ D @F06            C                   CONST(X'36')
+ D @F07            C                   CONST(X'37')
+ D @F08            C                   CONST(X'38')
+ D @F09            C                   CONST(X'39')
+ D @F10            C                   CONST(X'3A')
+ D @F11            C                   CONST(X'3B')
+ D @F12            C                   CONST(X'3C')
+ D @F13            C                   CONST(X'B1')
+ D @F14            C                   CONST(X'B2')
+ D @F15            C                   CONST(X'B3')
+ D @F16            C                   CONST(X'B4')
+ D @F17            C                   CONST(X'B5')
+ D @F18            C                   CONST(X'B6')
+ D @F19            C                   CONST(X'B7')
+ D @F20            C                   CONST(X'B8')
+ D @F21            C                   CONST(X'B9')
+ D @F22            C                   CONST(X'BA')
+ D @F23            C                   CONST(X'BB')
+ D @F24            C                   CONST(X'BC')
+ D @CLEAR          C                   CONST(X'BD')
+ D @ENTER          C                   CONST(X'F1')
+ D @HELP           C                   CONST(X'F3')
+ D @PAGUP          C                   CONST(X'F4')
+ D @PAGDN          C                   CONST(X'F5')
+ D @PRINT          C                   CONST(X'F6')
+ C     KEY           IFEQ      @F01
+ C                   ENDIF
+ 
+  *-----------------------------------------------------------------------
+  * Loops
+  *-----------------------------------------------------------------------
+  
+  * Loop1
+
+ C                   Do  
+ C                   Move      sss           W#sss
+ C                   Eval      *In97 =       '0'
+ C     XXky01        Setll     XX                                     97
+ C                   If        *In97 = *On
+ C                   Leave
+ C                   EndIf  
+ C     '1'           DowEq     '1' 
+ C     XXKy01        Reade     XX
+ C                   If        %Eof(XX)
+ C                   Leave
+ C                   Endif
+ 
+  *                  Logic here
+ 
+ C                   Enddo
+ C                   Enddo 
+  
+  * Loop2
+ 
+ C                   Move      sss           W#sss
+ C     *IN97         DouEq     *ON
+ C     XXky01        Delete    XX                                 97
+ C                   ENDDO                                              --
+ 
+  *------------------------------------------------------------------
+ C     SQL LOOP                            
+  *------------------------------------------------------------------
+ DPSCB           E DS                  EXTNAME( PSCBREP )                
+
+ C/EXEC SQL                                                          
+ C+ DECLARE C1 CURSOR FOR SELECT * FROM PSCBREP    
+ C+ FOR UPDATE OF CBDBCD                                             
+ C/END-EXEC                                                          
+                                                                    
+ C/EXEC SQL                                                          
+ C+        OPEN C1                                                   
+ C/END-EXEC                                                          
+                                                                    
+ C     SQLCOD        DOWNE     100  
+
+ C/EXEC SQL                                                     
+ C+        FETCH C1 INTO :PSCB                                  
+ C/END-EXEC                  
+
+ C     SQLCOD        IFEQ      100                              
+ C                   LEAVE                                      
+ C                   ENDIF                                   
+
+ C/EXEC SQL                                                  
+ C+ UPDATE PSCBREP SET CBDBCD = 0 WHERE CURRENT OF C1   
+ C/END-EXEC                                                                               
+   
+ 
+ C                   ENDDO           
+ C/EXEC SQL                          
+ C+        CLOSE C1                  
+ C/END-EXEC                          
+
+  *-----------------------------------------------------------------------
+  * Chain
+  *-----------------------------------------------------------------------
+ 
+ C                   Move      sss           W#sss
+ C     XXky01        Chain     XX
+ C                   If        %Found(XX)
+ C                   Endif
+ 
+  *-----------------------------------------------------------------------
+  * Select
+  *-----------------------------------------------------------------------
+ 
+ C                   Select
+ C     Condition1    Wheneq    'Y'
+  * logic here
+ C     Condition1    Wheneq    'N'
+  * logic here
+ C                   When      Condition1 = 
+  * logic here
+ C                   Other
+ C                   Endsl
+ 
+  *-----------------------------------------------------------------------
+  * Setll with indicator
+  *-----------------------------------------------------------------------
+ 
+ C                   Move      sss           W#sss
+ C                   Move      sss           W#sss
+ C     XXky01        Setll     XX                                     89
+  * indicator 89 = *On if record found that matches the key
+ 
+  *-----------------------------------------------------------------------
+  * Dates
+  *-----------------------------------------------------------------------
+ 
+ C                   Clear                   D4Sy144
+ 
+ C                   Eval      I2Actn = '2'
+ C                   MOVEL     '*CUR'        I2Fdt1
+ C                   Eval      I2FFmt = 'MMDDYY'
+ C                   Eval      I2TFmt = 'CMMDDYY'
+ C                   Eval      I2Dats = Dsdats
+ C                   EXSR      VldDte
+ 
+ C                   IF        I2Eror = *Zero
+  * with separator
+ C                   Eval      W#8Byt = I2dts1
+  * CYMD
+ C                   Eval      W#7Byt = I2tdt1
+ C                   Endif
+  *-----------------------------------------------------------------------
+ C     VLDDTE        BEGSR
+ 
+  *                  Validate Date
+  *-----------------------------------------------------------------------
+ 
+ C                   CALL      'SY144R'
+ C                   PARM                    D4Sy144
+ C                   ENDSR
+
+  *-----------------------------------------------------------------------
+  * Calculate duration 
+  *-----------------------------------------------------------------------
+ d DueDate         s               d   Inz(D'2006-01-01')          
+ d ToDay           s               d                               
+ c                   move      Udate         ToDay                 
+ c     ToDay         SubDur    DueDate       PastDue:*Days     3 0 
+ c                   eval      *inlr = *On
+
+ *
+ *  The CHAIN operation retrieves the first record from the file,
+ *  FILEX, that has a key field with the same value as the search
+ *  argument KEY (factor 1).
+ 
+ /FREE
+     CHAIN  KEY  FILEX;
+   //  If a record with a key value equal to the search argument is
+   //  not found, %FOUND returns '0' and the EXSR operation is
+   //  processed. If a record is found with a key value equal
+   //  to the search argument, the program continues with
+   //  the calculations after the EXSR operation.
+   
+   IF  NOT %FOUND;
+        EXSR  Not_Found;
+     ENDIF;
+
+ /END-FREE
+
+D num1            S              7P 2
+D num2            S              5S 1
+D num3            S              5I 0 inz(2)
+D chr1            S             10A   inz('Toronto   ')
+D chr2            S             10A   inz('Munich    ')
+D ptr             S               *
+ 
+ * Numeric expressions:
+ /FREE
+   num1 = %len(num1);                 //  7
+   num1 = %decpos(num2);              //  1
+   num1 = %len(num1*num2);            // 12
+   num1 = %decpos(num1*num2);         //  3
+    // Character expressions:
+   num1 = %len(chr1);                 // 10
+   num1 = %len(chr1+chr2);            // 20
+   num1 = %len(%trim(chr1));          //  7
+   num1 = %len(%subst(chr1:1:num3) + ' ' + %trim(chr2));//  9
+    // %len and %decpos can be useful with other built-in functions:
+    // Although this division is performed in float, the result is
+   // converted to the same precision as the result of the eval:
+   num1 = 27 + %dec (%float(num1)/num3 : %len(num1) : %decpos(num1));
+    // Allocate sufficient space to hold the result of the catenation
+   // (plus an extra byte for a trailing null character):
+   num3 = %len (chr1 + chr2) + 1;
+   ptr = %alloc (num3);
+   %str (ptr: num3) = chr1 + chr2;
+ /END-FREE
+
+ /FREE
+   arr(1) = 'Cornwall';
+   arr(2) = 'Kingston';
+   arr(3) = 'London';
+   arr(4) = 'Paris';
+   arr(5) = 'Scarborough';
+   arr(6) = 'York';
+ 
+   n = %LOOKUP('Paris':arr);
+   // n = 4
+ 
+   n = %LOOKUP('Thunder Bay':arr);
+   // n = 0 (not found)
+ 
+   n = %LOOKUP('Kingston':arr:3);
+   // n = 0 (not found after start index)
+ 
+   n = %LOOKUPLE('Paris':arr);
+   // n = 4
+ 
+   n = %LOOKUPLE('Milton':arr);
+   // n = 3
+ 
+   n = %LOOKGT('Sudbury':arr);
+   // n = 6
+ 
+   n = %LOOKGT('Yorks':arr:2:4);
+   // n = 0 (not found between elements 2 and 5)
+ /END-FREE
+
+ * The printer file is opened in the calculation specifications
+FQSYSPRT   O    F  132        PRINTER USROPN
+ 
+ /FREE
+    // Open the file if it is not already open
+    if not %open (QSYSPRT);
+       open QSYSPRT;
+    endif;
+ /END-FREE
+
+ * Prototype for procedure MaxInt which calculates the maximum
+ * value of its parameters (at least 2 parameters must be passed)
+D MaxInt          PR            10I 0
+D  p1                           10I 0 VALUE
+D  p2                           10I 0 VALUE
+D  p3                           10I 0 VALUE OPTIONS(*NOPASS)
+D  p4                           10I 0 VALUE OPTIONS(*NOPASS)
+D  p5                           10I 0 VALUE OPTIONS(*NOPASS)
+D Fld1            S             10A   DIM(40)
+D Fld2            S             20A
+D Fld3            S            100A
+CL0N01Factor1+++++++Opcode(E)+Factor2+++++++Result++++++++Len++D+HiLoEq..
+CL0N01Factor1+++++++Opcode(E)+Extended-factor2+++++++++++++++++++++++++++
+C     *ENTRY        PLIST
+C                   PARM                    MaxSize          10 0
+ * Make sure the main procedure was passed a parameter
+C                   IF        %PARMS < 1
+C     'No parms'    DSPLY
+C                   RETURN
+C                   ENDIF
+ * Determine the maximum size of Fld1, Fld2 and Fld3
+C                   EVAL      MaxSize = MaxInt(%size(Fld1:*ALL) :
+C                                             %size(Fld2) :
+C                                             %size(Fld3))
+C     'MaxSize is'  DSPLY                   MaxSize
+C                   RETURN
+ 
+
+ *----------------------------------------------------------------
+ * MaxInt - return the maximum value of the passed parameters
+ *----------------------------------------------------------------
+P MaxInt          B
+D MaxInt          PI            10I 0
+D  p1                           10I 0 VALUE
+D  p2                           10I 0 VALUE
+D  p3                           10I 0 VALUE OPTIONS(*NOPASS)
+D  p4                           10I 0 VALUE OPTIONS(*NOPASS)
+D  p5                           10I 0 VALUE OPTIONS(*NOPASS)
+D Max             S             10I 0 INZ(*LOVAL)
+
+ * Branch to the point in the calculations where we will never
+ * access unpassed parameters.
+C                   SELECT
+C                   WHEN      %PARMS = 2
+C                   GOTO      PARMS2
+C                   WHEN      %PARMS = 3
+C                   GOTO      PARMS3
+C                   WHEN      %PARMS = 4
+C                   GOTO      PARMS4
+C                   WHEN      %PARMS = 5
+C                   GOTO      PARMS5
+C                   ENDSL
+ * Determine the maximum value.  Max was initialized to *LOVAL.
+C     PARMS5        TAG
+C                   IF        p5 > Max
+C                   EVAL      Max = p5
+C                   ENDIF
+ *
+C     PARMS4        TAG
+C                   IF        p4 > Max
+C                   EVAL      Max = p4
+C                   ENDIF
+ *
+C     PARMS3        TAG
+C                   IF        p3 > Max
+C                   EVAL      Max = p3
+C                   ENDIF
+ *
+C     PARMS2        TAG
+C                   IF        p2 > Max
+C                   EVAL      Max = p2
+C                   ENDIF
+C                   IF        p1 > Max
+C                   EVAL      Max = p1
+C                   ENDIF
+C                   RETURN    Max
+P MaxInt          E
+
+D source          S             15A   inz ('Dr. Doolittle')
+D pos             S              5U 0
+ 
+ /FREE
+    pos = %scan ('oo' : source);
+    // After the EVAL, pos = 6 because 'oo' begins at position 6 in
+    // 'Dr. Doolittle'.
+     pos = %scan ('D' : source : 2);
+    // After the EVAL, pos = 5 because the first 'D' found starting from
+    // position 2 is in position 5.
+     pos = %scan ('abc' : source);
+    // After the EVAL, pos = 0 because 'abc' is not found in
+    // 'Dr. Doolittle'.
+     pos = %scan ('Dr.' : source : 2);
+    // After the EVAL, pos = 0 because 'Dr.' is not found in
+    // 'Dr. Doolittle', if the search starts at position 2.
+ /END-FREE
+
+ *
+ * The SCAN operation finds the substring 'ABC' starting in
+ * position 3 in factor 2;  3 is placed in the result field.
+ * Indicator 90 is set on because the string is found.  Because
+ * no starting position is specified, the default of 1 is used.
+C     'ABC'         SCAN      'XCABCD'      RESULT                   90
+ *
+ * This SCAN operation scans the string in factor 2 for an
+ * occurrence of the string in factor 1 starting at position 3.
+ * The 'Y' in position 1 of the base string is ignored because
+ * the scan operation starts from position 3.
+ * The operation places the values 5 and 6 in the first and
+ * second elements of the array.  Indicator 90 is set on.
+C
+C                   MOVE      'YARRYY'      FIELD1            6
+C                   MOVE      'Y'           FIELD2            1
+C     FIELD2        SCAN      FIELD1:3      ARRAY                    90
+ *
+ * This SCAN operation scans the string in factor 2, starting
+ * at position 2, for an occurrence of the string in factor 1
+ * for a length of 4.  Because 'TOOL' is not found in FIELD1,
+ * INT is set to zero and indicator 90 is set off.
+C
+C                   MOVE      'TESTING'     FIELD1            7
+C                   Z-ADD     2             X                 1 0
+C                   MOVEL     'TOOL'        FIELD2            5
+C     FIELD2:4      SCAN      FIELD1:X      INT90            20
+C
+ *
+ * The SCAN operation is searching for a name.  When the name
+ * is found, %FOUND returns '1' so HandleLine is called.
+C     SrchName      SCAN      Line
+C                   IF        %FOUND
+C                   EXSR      HandleLine
+C                   ENDIF 
+
+ /free
+    // Example 1
+    // Compute n!
+     factorial = 1;
+    for i = 1 to n;
+       factorial = factorial * i;
+    endfor;
+
+     // Example 2
+    // Search for the last nonblank character in a field.
+    // If the field is all blanks, "i" will be zero.
+    // Otherwise, "i" will be the position of nonblank.
+     for i = %len (field) downto 1;
+       if %subst(field: i: 1) <> ' ';
+          leave;
+       endif;
+    endfor;
+
+     // Example 3
+    // Extract all blank-delimited words from a sentence.
+     WordCnt = 0;
+    for i = 1 by WordIncr to %len (Sentence);
+       // Is there a blank?
+       if %subst(Sentence: i: 1) = ' ';
+          WordIncr = 1;
+          iter;
+       endif;
+        // We've found a word - determine its length:
+       for j = i+1 to %len(Sentence);
+          if %subst (Sentence: j: 1) = ' ';
+             leave;
+          endif;
+       endfor;
+        // Store the word:
+       WordIncr = j - i;
+       WordCnt = WordCnt + 1;
+       Word (WordCnt) = %subst (Sentence: i: WordIncr);
+    endfor;
+ /end-free
+             
+
+
+
+
+
+
+
+                           
+

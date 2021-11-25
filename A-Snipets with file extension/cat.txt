@@ -1,0 +1,49 @@
+      *
+      * The following example shows leading blanks in factor 2. After
+      * the CAT, the RESULT contains 'MR.bSMITH'.
+      *
+     C                   MOVE      'MR.'         NAME              3
+     C                   MOVE      ' SMITH'      FIRST             6
+     C     NAME          CAT       FIRST         RESULT            9
+      *
+      * The following example shows the use of CAT without factor 1.
+      * FLD2 is a 9 character string. Prior to the concatenation, it
+      * contains 'ABCbbbbbb'; FLD1 contains 'XYZ
+      * After the concatenation, FLD2 contains 'ABCbbXYZb'.
+      *
+     C                   MOVEL(P)  'ABC'         FLD2              9
+     C                   MOVE      'XYZ'         FLD1              3
+     C                   CAT       FLD1:2        FLD2
+      *
+      * CAT concatenates LAST to NAME and inserts one blank as specified
+      * in factor 2. TEMP contains 'Mr.bSmith'.
+     C                   MOVEL     'Mr. '        NAM6              6
+     C                   MOVE      'Smith '      LAST              6
+     C     NAM6          CAT       LAST:1        TEMP9             9
+      *
+      * CAT concatenates 'RPG' to STRING and places 'RPG/400' in TEMP.
+     C                   MOVE      '/400'        STRING            4
+     C     'RPG'         CAT       STRING        TEMP7             7
+      *
+      * The following example is the same as the previous example except
+      * that TEMP is defined as a 10 byte field. P operation extender
+      * specifies that blanks will be used in the rightmost positions
+      * of the result field that the concatenation result, 'RPG/400',
+      * does not fill. As a result, TEMP contains 'RPG/400bbb'
+      * after concatenation.
+     C                   MOVE      *ALL'*'       TEMP10           10
+     C                   MOVE      '/400'        STRING            4
+     C     'RPG'         CAT(P)    STRING        TEMP10
+      *
+      * After this CAT operation, the field TEMP contains 'RPG/4'.
+      * Because the field TEMP was not large enough, truncation occurred.
+     C                   MOVE      '/400'        STRING            4
+     C     'RPG'         CAT       STRING        TEMP5             5
+      *
+      * Note that the trailing blanks of NAME are not included because
+      * NUM=0. The field TEMP contains 'RPGIVbbbbb'.
+     C                   MOVEL     'RPG '        NAME5             5
+     C                   MOVEL     'IV '         LAST5             5
+     C                   Z-ADD     0             NUM               1 0
+     C     NAME5         CAT(P)    LAST5:NUM     TEMP10           10
+     C                   EVAL      *INLR = *ON

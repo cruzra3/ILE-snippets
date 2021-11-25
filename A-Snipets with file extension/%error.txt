@@ -1,0 +1,11 @@
+     /free
+      Chain(e) (Arg_Cust:Arg_Inv) File_D;
+      If %error;
+        Exsr Error_subr;
+      Endif;
+
+      Read(e) File_A;
+      If %error;
+        Exsr Error_subr;
+      Endif;
+     /end-free

@@ -1,0 +1,23 @@
+     /free
+      // Write a new record in a file
+      Write Record_A;
+
+      // Update an entire record
+      Update Record_A;
+
+      // Update only certain fields in the record
+      Update Record_A %fields(Name:Zip:Amount_Due);
+      
+      // Delete the last record read
+      Delete Record_A;
+      
+      // Delete a record using a key
+      Delete (Arg_1:Arg_2) Record_A;
+      If not %found;
+        Message = 'Record was not deleted';
+      Endif;
+      
+      // Perform exception output
+      Except Label_A;
+      
+     /end-free

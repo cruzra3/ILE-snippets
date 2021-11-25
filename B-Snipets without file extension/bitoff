@@ -1,0 +1,74 @@
+     D FieldA          S              1A   INZ(X'00')
+     D FieldB          S              1A   INZ(X'00')
+     D FieldC          S              1A   INZ(X'FF')
+     D FieldD          S              1A   INZ(X'C0')
+     D FieldE          S              1A   INZ(X'C0')
+     D FieldF          S              1A   INZ(X'81')
+     D FieldG          S              1A   INZ(X'4F')
+     D FieldH          S              1A   INZ(X'08')
+     D FieldI          S              1A   INZ(X'CE')
+     D FieldJ          S              1A   INZ(X'80')
+     D FieldK          S              1A   INZ(X'80')
+     D BITNC           C                   CONST('0246')
+     D HEXNC           C                   CONST(X'0F')
+     D HEXNC2          C                   CONST(X'F0')
+     d msg1            c                   'Field  value is '
+     d msg2            s             18
+     d Fld             s              1
+     d rslt            s              1
+
+     C                   Eval      Fld = FieldG
+     C                   ExSr      ShowMe
+
+      * Set off bits 0,4,6 in FieldG. Leave bits 1,2,3,5,7 unchanged.
+      * Setting off bit 0, which is already off, results in bit 0 remaining
+      * off.
+      * Factor 2 = 10001010
+      * FieldG = 01001111 (before)
+      * FieldG = 01000101 (after)
+
+     C                   BITOFF    '046'         FieldG
+
+     C                   Eval      Fld = FieldG
+     C                   ExSr      ShowMe
+
+      * Field name: You can specify the name of a one-position character
+      * field, table
+      * element, or array element in factor 2. The bits that are on in the
+      * field, table
+      * element, or array element are set off in the result field; bits that
+      * are off do not
+      * affect the result.
+
+      * Set off bits 0,2,4,6 in FieldI. Leave bits 1,3,5,7 unchanged.
+      * Setting off bit 2, which is already off, results in bit 2 remaining
+      * off.
+      * Factor 2 = 10101010
+      * FieldI = 11001110 (before)
+      * FieldI = 01000100 (after)
+
+     C                   BITOFF    BITNC         FieldI
+
+     C                   Eval      Fld = FieldI
+     C                   ExSr      ShowMe
+
+      * HEXNC is equivalent to literal '4567', bit pattern 00001111.
+      * Set off bits 4,5,6,7 in FieldK. Leave bits 0,1,2,3 unchanged.
+      * Factor 2 = 11110000
+      * FieldK = 10000000 (before)
+      * FieldK = 00000000 (after)
+
+     C                   BITOFF    HEXNC2        FieldK
+
+     C                   Eval      Fld = FieldK
+     C                   ExSr      ShowMe
+
+     C                   Eval      *InLr = *On
+      *-------------------------------------------------------------------------
+     C     ShowMe        BegSr
+      *-------------------------------------------------------------------------
+     C     Msg1          Cat       Fld           Msg2
+      /free
+         dsply Msg2  ' ' rslt;
+      /end-free
+     C                   EndSr

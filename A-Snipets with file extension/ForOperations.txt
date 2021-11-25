@@ -1,0 +1,31 @@
+     /free
+
+      //    Indexing low to high:
+      // The following is a traditional bubble sort of
+      // an array. Variable n is the highest element to
+      // be included in the sort, and i and j are indexes
+      // of two For groups.
+
+      For i = 1 to n;
+        For j = 1 to n-1;
+          If Array(j+1) < Array(j);
+            SaveElem = Array(j);
+            Array(j) = Array(j+1);
+            Array(j+1) = SaveElem;
+          Endif;
+        Endfor;
+      Endfor;
+
+      //    Indexing high to low:
+      // The following routine finds the position of the
+      // last s in a phrase. Phrase is defined alpha-40
+      // "She sells sea shells by the seashore.   "
+
+      For index = %len(phrase) downto 1;
+        If %subst(phrase:index:1) = 's';
+          Leave; // Loop interrupt, described below
+        Endif;
+      Endfor;
+      // The variable index will be 32 at this point.
+
+     /End-free

@@ -1,0 +1,41 @@
+     D Timeres         S               T   TIMFMT(*EUR)
+     D Dateres         S               D   DATFMT(*USA)
+     D Tstmpres        S               Z
+      *
+      * When the TIME operation is processed (with a 6-digit numeric
+      * field), the current time (in the form hhmmss) is placed in the
+      * result field CLOCK. The TIME operation is based on the 24-hour
+      * clock, for example, 132710. (In the 12-hour time system, 132710
+      * is 1:27:10 p.m.)
+     C                   TIME                    Clock             6 0
+      * When the TIME operation is processed (with a 12-digit numeric
+      * field), the current time and day is placed in the result field
+      * TIMSTP. The first 6 digits are the time, and the last 6 digits
+      * are the date; for example, 093315121579 is 9:33:15 a.m. on
+      * December 15, 1979.
+     C                   TIME                    TimStp           12 0
+     C                   MOVEL     TimStp        Time1             6 0
+     C                   MOVE      TimStp        SysDat            6 0
+      * This example duplicates the 12-digit example above but uses a
+      * 14-digit field. The first 6 digits are the time, and the last
+      * 8 digits are the date; for example, 13120001101992
+      * is 1:12:00 p.m. on January 10, 1992.
+     C                   TIME                    TimStp2          14 0
+     C                   MOVEL     TimStp2       Time2             6 0
+     C                   MOVE      TimStp2       SysDat2           8 0
+      * When the TIME operation is processed with a date field,
+      * the current date is placed in the result field DATERES.
+      * It will have the format of the date field. In this case
+      * it would be in *USA format ie: D'mm/dd/yyyy'.
+     C                   TIME                    Dateres
+      * When the TIME operation is processed with a time field,
+      * the current time is placed in the result field TIMERES.
+      * It will have the format of the time field. In this case
+      * it would be in *EUR format ie: T'hh.mm.ss'.
+     C                   TIME                    Timeres
+      * When the TIME operation is processed with a timestamp field,
+      * the current timestamp is placed in the result field TSTMPRES.
+      * It will be in *ISO format.
+      * ie: Z'yyyy-mm-dd-hh.mm.ss.mmmmmm'
+     C                   TIME                    Tstmpres
+     C                   Eval      *InLr = *On

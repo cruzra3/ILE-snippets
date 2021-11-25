@@ -1,0 +1,36 @@
+     H DATFMT(*MDY)
+     D datefld         S               D   INZ(D'04/15/96')
+     D char_fld1       S              8A
+     D char_fld2       S             10A   INZ('XXXXXXXXXX')
+     D char_fld3       S             10A   INZ('04/15/96XX')
+     D date_fld3       S               D
+     D char_fld4       S             10A   INZ('XXXXXXXXXX')
+     D char_fld5       S              9A   INZ('015/04/50')
+     D date_fld2       S               D   INZ(D'11/16/10')
+      * Date to Character MOVEL
+      * The result field length is equal to the factor 2 length. Value of
+      * char_fld1 after the MOVEL operation is '04/15/96'.
+     C     *MDY          MOVEL     datefld       char_fld1
+      * Date to Character MOVEL
+      * The result field length is longer than the factor 2 length.
+      * Before MOVEL, result field contains 'XXXXXXXXXX'
+      * Value of char_fld2 after the MOVEL operation is '04/15/96XX'.
+     C     *MDY          MOVEL     datefld       char_fld2
+      * Character to Date MOVEL
+      * The result field length is shorter than the factor 2 length.
+      * Value of date_fld3 after the MOVEL operation is '04/15/96'.
+     C     *MDY          MOVEL     char_fld3     date_fld3
+      * Date to Character MOVEL (no separators)
+      * The result field length is longer than the factor 2 length.
+      * Before MOVEL, result field contains 'XXXXXXXXXX'
+      * Value of char_fld4 after the MOVEL operation is '041596XXXX'.
+     C     *MDY0         MOVEL     datefld       char_fld4
+      * Character to date MOVEL
+      * The result field length is equal to the factor 2 length.
+      * The value of date_fld3 after the move is 04/15/50.
+     C     *CDMY         MOVEL     char_fld5     date_fld3
+      * Date to character MOVEL (no separators)
+      * The result field length is longer than the factor 2 length.
+      * The value of char_fld4 after the move is '2010320XXX'.
+     C     *LONGJUL0     MOVEL     date_fld2     char_fld4
+     C                   MOVE      *On           *inlr

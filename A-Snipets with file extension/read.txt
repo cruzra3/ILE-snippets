@@ -1,0 +1,18 @@
+     FLerne     IF   F  300        DISK
+     DDatStr         E DS                  ExtName(HRPLE)
+     C                   Dow       '1'
+     C                   Clear                   DatStr
+     C                   Read      Lerne         DatStr
+     C                   Add       1             Count             2 0
+     C                   If        Count = 7
+     C                   Leave
+     C                   EndIf
+
+     C                   If        %Eof(Lerne)
+     C                   MOVEL     'Yes'         Found             3
+     C                   Else
+     C                   MOVEL     'No '         Found
+     C                   EndIf
+
+     C                   EndDo
+     C                   MOVE      *ON           *inlr

@@ -1,0 +1,20 @@
+*************** Beginning of data *****************************
+ * Indicator as a standalone field using lenght notation       
+D   Found                        1N                            
+                                                               
+ * Array of indicators                                         
+D    ItemsUsed                    N   dim( 10 )                
+                                                               
+ * Logical data area used as indicator                         
+D    OkToUse                     1N   DtaAra                   
+                                                               
+ * Using named indicators                                      
+C                   If        Found                            
+                                                               
+ * Using a logical data area as an indicator                   
+C     *Lock         In        *DtaAra                          
+C                   If        OkToUse                          
+C* ... do something here                          
+C                   EndIf                         
+C                   Eval      OkToUse = *Off      
+C                   Out       *DtaAra             

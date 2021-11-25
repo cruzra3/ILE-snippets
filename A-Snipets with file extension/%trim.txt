@@ -1,0 +1,12 @@
+    D City        S      20      Inz('  Rio  ')
+    D State       S      15      Inz('  Illinois  ')
+    D Postal_code S      10      Inz('  61414   ')
+    D Address_L4  S      50
+
+     /free
+      Address_L4 =   %trim(City) + ', '
+                   + %trim(State) + '  '
+                   + %trim(Postal_code);
+
+      // Address_L4 = 'Rio, Illinois  61414'
+     /end-free

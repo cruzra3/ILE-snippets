@@ -1,0 +1,23 @@
+      *------------------------------------------------------------------*
+      * MSGSMPLR - ERROR MSG SAMPLES                                     *
+      *------------------------------------------------------------------*
+     FMSGIDD  CF  E                    WORKSTN
+      *
+      *   Mainline
+      *
+     C           *IN03     DOUEQ*ON                        Stay until exit
+     C                     EXFMTFMT
+     C           *IN03     IFEQ *OFF                       No exit or
+     C                     MOVE CUSNBR    MSGDTA
+     C                     MOVE *ON       *IN71            ERROR
+     C                     ENDIF
+     C                     ENDDO                           End main loop
+      *
+     C                     MOVE *ON       *INLR            SETON LR
+     C                     RETRN                            AND RETURN
+      *
+      *  Initialization subroutine
+      *
+     C           *INZSR    BEGSR
+     C                     MOVE *ON       *IN41            Inquiry mode
+     C                     ENDSR

@@ -1,0 +1,17 @@
+      /free
+       // Addition and subtraction
+       Answer1 = Field1 + Field2 - Field3;
+       //   If Field1 is 20.55, Field2 is 101.03, and
+       //   Field3 is 50.00, then Answer1 = 71.58.
+
+       // Multiplication and division
+       Answer2 = Field4 * Field5 / Field6;
+       //   If Field4 is 45.03, Field5 is 8, and Field6
+       //   is 7, then Answer2 = 51.46, assuming Answer2
+       //   has two decimal positions.
+
+       // Remainder
+       Remainder = %rem(Dividend:Divisor);
+       //   If Dividend is 725, and Divisor is 320, then
+       //   Remainder = 85.
+      /end-free

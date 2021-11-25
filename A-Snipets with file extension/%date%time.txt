@@ -1,0 +1,17 @@
+    D Date8       S       8      Inz('12312004')
+    D Time6       S       6  0   Inz(182403)
+    D D8          S        d
+    D T6          S        t
+     /free
+      // Convert the 8-character date to a date data type
+      D8 = %date(Date8:*USA);
+
+      // Convert the 6-digit time to a time data type
+      T6 = %time(Time6:*HMS);
+
+      // Get the current system date and load it into D8
+      D8 = %date();
+
+      // Get the current system time and load it into T6
+      T6 = %time();
+     /end-free

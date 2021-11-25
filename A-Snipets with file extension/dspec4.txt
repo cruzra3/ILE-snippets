@@ -1,0 +1,21 @@
+      *
+      * Use length notation to define the data structure subfields.
+      * You can refer to the entire data structure by using Partno, or by
+      * using the individual subfields Manufactr, Drug, Strength or Count.
+      *
+     D Partno          DS
+     D Manufactr                      4
+     D Drug                           6
+     D Strength                       3
+     D Count                          3  0
+      *
+      * Records in program described file FILEIN contain a field, Partno,
+      * which needs to be subdivided for processing in this program.
+      * To achieve this, the field Partno is described as a data structure
+      * using the above Definition specification
+      *
+     IFILEIN    NS  01    1 CA    2 CB
+     I                                  3   18  Partno
+     I                                 19   29  Name
+     I                                 30   40  Patno
+     C                   Eval      *InLr = *On

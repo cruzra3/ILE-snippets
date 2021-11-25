@@ -1,0 +1,21 @@
+     d RECNO           S              6  0
+     D EHWRK           S              6  2 INZ(10.50)
+     D CURHRS          S              6  2 INZ(10.50)
+     D OVRTM           S              6  2 INZ( 5.50)
+     D REGHRS          S              6  2 INZ( 5.00)
+     D TOTPAY          S              6  2
+     C                   ADD       1             RECNO
+      * The contents of EHWRK are added to CURHRS.
+     C                   ADD       EHWRK         CURHRS
+      * The contents of OVRTM and REGHRSare added together and
+      * placed in TOTPAY.
+     C     OVRTM         ADD       REGHRS        TOTPAY
+      *
+      *
+      *
+      /free
+         recno  = recno + 1;
+         curhrs = ehwrk + curhrs;
+         totpay = ovrtm + reghrs;
+      /end-free
+     C                   EVAL      *INLR = *ON

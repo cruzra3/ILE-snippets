@@ -1,0 +1,17 @@
+     D Up              C                   'ABCDEFGHIJKLMNOPQRS+
+     D                                     TUVWXYZ'
+     D Lo              C                   'abcdefghijklmnopqrs+
+     D                                     tuvwxyz'
+      *
+      * In the following example, all values in STRING are translated to
+      * uppercase. As a result, RESULT='RPG DEPT'.
+      *
+     C                   MOVE      'rpg dept'    String            8
+     C     Lo:Up         XLATE     String        Result            8
+      *
+      * In the following example only part of the string is translated
+      * to lowercase. As a result, RESULT='RPG Dept'.
+      *
+     C                   Eval      String = Result
+     C     Up:Lo         XLATE     String:6      Result
+     C                   EVAL      *INLR = *ON

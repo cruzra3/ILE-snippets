@@ -1,0 +1,11 @@
+     D  F1      S         10      inz ('Now')
+     D  F2      S         10      inz ('is')
+     D  F3      S         10      inz ('the')
+     D  F4      S         10      inz ('time')
+     D  String  S         50
+
+      /free
+       String = %trim (F1) + ' '
+                 + %trim (F2)+ ' '
+                 + %trim (F3) + ' '
+                 + %trim (F4) + '.';

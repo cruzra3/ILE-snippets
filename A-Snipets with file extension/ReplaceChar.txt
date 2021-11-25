@@ -1,0 +1,12 @@
+     D Search_char     S        1        Inz'i'
+     D Char_string     S       30        Inz'Mississippi'
+     D i               S        2  0
+      /free
+       i=1;
+       Dou i = *Zero;
+         i  = %scan(Search_char:Char_string:i);
+         If i > * Zero;
+           %subst(Char_string:i:1) = 'a';
+           i += 1;
+         Endif;
+       Enddo;

@@ -1,0 +1,10 @@
+DName+++++++++++ETDsFrom+++To/L+++IDc.Keywords++++++++++
+*************** Beginning of data **********************
+d f8              s              8f   inz (-1)          
+d i10             s             10i 0 inz (-123)        
+d p7              s              7p 3 inz (-1234.567)   
+  /free                                                 
+     f8  = %abs (f8);        // "f8" is now 1.          
+     i10 = %abs (i10 - 321); // "i10" is now 444.       
+     p7  = %abs (p7);        // "p7" is now 1234.567.   
+ /end-free                                              

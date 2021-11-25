@@ -1,0 +1,15 @@
+     D DayNamesData    DS
+     D                                9    Inz('Saturday')
+     D                                9    Inz('Sunday  ')
+     D                                9    Inz('Monday  ')
+     D                                9    Inz('Tuesday ')
+     D                                9    Inz('Wednesday')
+     D                                9    Inz('Thursday')
+     D                                9    Inz('Friday')
+     D pDayNames       S               *   Inz(%Addr(DayNamesData))
+     D DayName         S              9    Dim(7) Based(pDayNames)
+      /free
+          Eval pDayNames = %Addr(DayName(4));
+          Dsply DayName(3);   // Display thursday
+          *Inlr = *On;
+      /end-free

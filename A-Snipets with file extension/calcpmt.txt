@@ -1,0 +1,20 @@
+     H Nomain  Fltdiv(*Yes)   Expropts(*ResDecPos)
+     DCalcPmt          PR            15P 2
+     D                               15P 2 Value
+     D                                7P 7 Value
+     D                                7P 0 Value
+     PCalcPmt          B                   Export
+     D                 PI            15P 2
+     DPrincipal                      15P 2 Value
+     DInterest                        7P 7 Value
+     DMonths                          7P 0 Value
+     DPayment          S             15P 2
+      /free
+         Payment = %Dech(
+                   Principal * (((Interest / 12) *
+                   (1 + (Interest / 12)) ** Months) /
+                   (((1 + (Interest / 12)) ** Months) - 1))
+                   : 15 : 2);
+         Return Payment;
+      /end-free
+     P CalcPmt         E

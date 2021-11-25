@@ -1,0 +1,31 @@
+    D Date1          S         d     Inz(d'2005-06-04')
+    D Time1          S         t     Inz(t'14.04.45')
+    D NewDate        S         d
+    D Newtime        S         t
+    D Num6           S        6  0
+    D Diff           S        6  0
+    D Month          S        2  0
+     /free
+      // Calculate a new date three months from Date1
+      NewDate = Date1 + %months(3); // NewDate= 2005-09-04
+
+      // Calculate a time five hours before Time1
+      Newtime = Time1 - %hours(5); // Newtime = 09.04.45
+
+      // Extract the month from NewDate
+      Month = %subdt(NewDate:*Month); // Month = 09
+
+      // Calculate various items
+      Diff = %diff(Time1:Newtime:*seconds); // Difference
+                                            // in seconds
+
+      Num6 = %int(%char(%time():*hms0)); // Current time
+                              // converted into 6 digits
+
+      // A message string:
+      String = 'The current time is ' +
+                %char(%time():*USA);
+      // If it's now 1:15 PM, String becomes "The current
+      // time is 1:15 PM"
+     /end-free
+

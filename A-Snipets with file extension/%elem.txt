@@ -1,0 +1,10 @@
+     D Arry1       S       8      Dim(30)
+     D Arry2       S      20      Dim(%elem(Arry1)
+     D i           s       2   0
+
+      /free
+       // Use %elem to control a For group
+       For i = 1 to %elem(Arry1);
+         Arry2(i) = %subst(Arry1(i):4:3);
+       Endfor;
+      /end-free

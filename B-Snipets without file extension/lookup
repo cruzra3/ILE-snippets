@@ -1,0 +1,32 @@
+     DSRCHWD           C                   CONST('A')
+     DARY              S              1    DIM(6) CTDATA PERRCD(6)
+      *
+      * In this example, the programmer wants to know which element in
+      * ARY the LOOKUP operation locates. The Z-ADD operation sets the
+      * field X to 1. The LOOKUP starts at the element ARY that is
+      * indicated by field X and continues running until it finds the
+      * first element equal to SRCHWD. The index value, X, is set to
+      * the position number of the element located.
+     C
+     C                   Z-ADD     1             X                 3 0
+     C     SRCHWD        LOOKUP    ARY(X)                                 26
+     C
+      * In this example, the programmer wants to know if an element
+      * is found that is equal to SRCHWD. LOOKUP searches ARY until it
+      * finds the first element equal to SRCHWD. When this occurs,
+      * indicator 26 is set on and %EQUAL is set to return '1'.
+     C
+     C     SRCHWD        LOOKUP    ARY                                    26
+     C
+      * The LOOKUP starts at a variable index number specified by
+      * field X. Field X does not have to be set to 1 before the
+      * LOOKUP operation. When LOOKUP locates the first element in
+      * ARY equal to SRCHWD, indicator 26 is set on and %EQUAL is set
+      * to return '1'. The index value, X, is set to the position
+      * number of the element located.
+      *
+     C
+     C     SRCHWD        LOOKUP    ARY(X)                                 26
+     C                   EVAL      *INLR = *ON
+** CTDATA(ARY)
+FGHABC

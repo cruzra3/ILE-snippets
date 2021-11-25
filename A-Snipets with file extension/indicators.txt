@@ -1,0 +1,10 @@
+     D IndDsPtr        S               *   Inz( %Addr( *In ))
+     D IndDs           Ds                  Based( IndDsPtr )
+
+      ***********ExitPgm = *In03
+     D  ExitPgm                3      3N
+
+      ***********Return  = *In12
+     D  Return                12     12N
+
+     C                   MOVE      *ON           *inlr

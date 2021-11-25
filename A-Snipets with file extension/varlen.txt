@@ -1,0 +1,13 @@
+     D                 Ds
+     D num1                          10s 0 inz(0)
+     D fld                           10a   VARYING inz('')
+      * It does not matter what length 'fld' has before the
+      * EVAL; after the EVAL, the length will be 2.
+      /Free
+           num1 = %len(fld);
+      /End-Free
+     C                   EVAL      fld = 'XY'
+      /Free
+           num1 = %len(fld);
+      /End-Free
+     C                   MOVE      *ON           *inlr

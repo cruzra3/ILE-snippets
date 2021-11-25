@@ -1,0 +1,24 @@
+     /free
+
+      // Accumulation addition
+      RRN += 1;
+      //   If RRN was 5 before this operation, then
+      //   after the operation it is 6.
+
+      // Accumulation subtraction
+      Balance -= Payment;
+      //   If Balance was 719.31 before the operation and
+      //   Payment was 65.48, then after the operation
+      //   Balance is 653.83.
+
+      // Accumulation multiplication
+      Rate *= 1.05;
+      //   If Rate was 7.00 before this operation, then
+      //   after the operation it is 7.35.
+
+      // Accumulation division
+      NewPrice /= 4;
+      //   If NewPrice was 100 before this operation, then
+      //   after the operation it is 25.
+
+     /end-free

@@ -1,0 +1,27 @@
+      * Define Data areas
+     D TotAmt          s              8p 2 dtaara
+     D TotGrs          s             10p 2 dtaara
+     D TotNet          s             10p 2 dtaara
+     D Amount          s              8p 2 Inz(10.00)
+     D Gross           s             10p 2 Inz(25.00)
+     D Net             s             10p 2 Inz(15.00)
+      * TOTAMT, TOTGRS, and TOTNET are defined as data areas. The IN
+      * operation retrieves all the data areas defined in the program
+      * and locks them. The program processes calculations, and at
+      * LR time it writes and unlocks all the data areas.
+      * The data areas can then be used by other programs.
+      /free
+         in *lock *dtaara;
+         TotAmt = TotAmt + Amount;
+         TotGrs = TotGrs + Gross;
+         TotNet = TotNet + Net;
+      /end-free
+      * To start total calcs, code a fixed format calc statement with a
+      * level entry specified.
+     C                   MOVE      *ON           *inlr
+     CL0   total_calcs   tag
+      /free
+         if *inlr;
+         out *dtaara;
+         endif;
+      /end-free

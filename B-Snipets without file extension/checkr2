@@ -1,0 +1,12 @@
+      *
+      * After the following example, N=1 and the found indicator 90
+      * is on. Because the start position is 5, the operation begins
+      * with the rightmost 0 and the first nonnumeric found is the '$'.
+      *
+     D Digits          C                   '0123456789'
+     D N               S              3  0
+     D
+     C
+     C                   MOVE      '$2000.'      Salary            6
+     C     Digits        CHECKR    Salary:5      N                        90
+     C                   EVAL      *INLR = *ON

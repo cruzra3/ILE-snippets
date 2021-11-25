@@ -1,0 +1,26 @@
+Do group to be converted:
+C     1        Do       10               RRN
+C              Read     Datafile
+C              If       %eof(Datafile)
+C              Leave
+C              Else
+C              Eval     SFF1 = DBF1
+C              Eval     SFF2 = DBF2
+C              Write    SFRecord
+C              Endif
+C              Enddo    1
+
+
+Free-format equivalent:
+      /free
+       For RRN = 1 to 10;  // Increment 1 is assumed
+         Read Datafile;
+         If %eof(Datafile);
+           Leave;
+         Else;
+           SFF1 = DBF1;
+           SFF2 = DBF2;
+           Write SFRecord;
+         Endif;
+       Endfor;
+

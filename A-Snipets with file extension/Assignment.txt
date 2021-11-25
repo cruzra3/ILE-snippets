@@ -1,0 +1,34 @@
+     FDbpf      IF   E             DISK                                           
+      *                                                                           
+      * Example of assignment statements                                          
+      *                                                                           
+     D Hourly_rate     S             15  2                                        
+     D Hours           S             15  2                                        
+     D Pay             S             15  2                                        
+     D F3              S              3                                           
+     D F7              S              7                                           
+     D Field30         S             30                                           
+     D Field10         S             10    Inz('ABCDEFGHIJ')                      
+     D Field3          S              3                                           
+     C                   Read      Dbpf                                   43      
+      /free                                                                       
+       Field30 = Field10;     // Field30 is cleared, and then Field10 is          
+                              // moved to it, left-justified                      
+       Eval(h) Pay = Hourly_rate * hours;  // The math is performed (with         
+                              // rounding) and the result assigned to Pay                                                                                     
+                              // More complex forms                                           
+       *In03 = F7 = F3;       // This statement checks to see whether F7              
+                              // is equal to F3. If yes, *In03 is set to              
+                              // *On, but if F7 is not equal to F3, *In03             
+                              // is set to *Off.                                      
+       *In21 = *In43 or (Pay > 100);  // This statement sets *In21 to *On             
+                              // if either *In43 is *On or Pay > 100.                 
+       %subst(Field30:5:4) = 'xyz';  // Positions 5-8 of Field30 are                  
+                              // cleared, and then 'xyz' is moved to 5-7.             
+       Field3 = *In03 + (Pay > 100) + %eof(Dbpf);  // Three items are                 
+                              // evaluated as true or false and then                  
+                              // concatenated, with the result of Field3              
+                              // equal to '000', '001', '010', etc.                   
+        *InLr = *On;                                                                  
+      /end-free                                                                       	  
+                                                                                  

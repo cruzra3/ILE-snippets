@@ -1,0 +1,15 @@
+    D String1     S       5       Inz('ABCDE')
+    D String2     S       3       Inz('xyz')
+    D Outstring   S      10       Inz(*Blanks)
+      
+      /free
+       // Put String1 in Outstring, starting with the B
+       Outstring = %subst(String1:2:4);
+       
+       // Outstring now 'BCDE      '
+       
+       // Put String2 in Outstring, starting at pos 6
+       %subst(Outstring:6:%len(String2)) = String2;
+       
+       // Outstring now 'BCDE xyz  '
+      /end-free

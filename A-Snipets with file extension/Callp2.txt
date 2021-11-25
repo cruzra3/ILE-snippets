@@ -1,0 +1,8 @@
+    D AR0300R            PR              Extproc
+    D  Screen                     5  2
+    D  DB                         7  2
+     /free
+      CallP AR0300R(ScreenAmt:DBAmt);
+      // With the Extproc keyword in the prototype,
+      // the procedure call is a bound (static) call.
+     /end-free

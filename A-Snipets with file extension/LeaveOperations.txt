@@ -1,0 +1,13 @@
+     /free
+      // Load a subfile with the next 10 data records
+      For I = 1 to 10;
+        Read data_file;  // Get next record or eof
+        If %eof(data_file);  // If eof
+          Leave;         // Jump out of For loop
+        Endif;
+        // Load subfile from data record here
+
+      Endfor;
+      // Leave instruction sends control here
+
+     /end-free

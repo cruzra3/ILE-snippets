@@ -1,0 +1,30 @@
+      *
+      * The DO group is processed 10 times when indicator 17 is on;
+      * it stops running when the index value in field X, the result
+      * field, is greater than the limit value (10) in factor 2. When
+      * the DO group stops running, control passes to the operation
+      * immediately following the ENDDO operation. Because factor 1
+      * in the DO operation is not specified, the starting value is 1.
+      * Because factor 2 of the ENDDO operation is not specified, the
+      * incrementing value is 1.
+     C                   EVAL      *IN17 = *ON
+     C   17              DO        10            X                 3 0
+     C*:
+     C                   ENDDO
+      * The DO group can be processed 10 times. The DO group stops
+      * running when the index value in field X is greater than
+      * the limit value (20) in factor 2, or if indicator 50 is not on
+      * when the ENDDO operation is encountered. When indicator 50
+      * is not on, the ENDDO operation is not processed; therefore,
+      * control passes to the operation following the ENDDO operation.
+      * The starting value of 2 is specified in factor 1 of the DO
+      * operation, and the incrementing value of 2 is specified in
+      * factor 2 of the ENDDO operation.
+      *
+     C     2             DO        20            X                 3 0
+     C                   EVAL      *IN50 = *ON
+     C*:
+     C*:
+     C*:
+     C   50              ENDDO     2
+     C                   EVAL      *INLR = *ON

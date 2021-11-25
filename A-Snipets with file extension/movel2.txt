@@ -1,0 +1,20 @@
+      *
+      * Example of MOVEL from variable to variable length
+      * for character fields
+      *
+     D var5a           S              5A   INZ('ABCDE') VARYING
+     D var5b           S              5A   INZ('ABCDE') VARYING
+     D var5c           S              5A   INZ('ABCDE') VARYING
+     D var10           S             10A   INZ('0123456789') VARYING
+     D var15a          S             15A   INZ('FGH') VARYING
+     D var15b          S             15A   INZ('FGH') VARYING
+      *
+     C                   MOVEL     var15a        var5a
+      * var5a = 'FGHDE' (length=5)
+     C                   MOVEL     var10         var5b
+      * var5b = '01234' (length=5)
+     C                   MOVEL     var5c         var15a
+      * var15a = 'ABC' (length=3)
+     C                   MOVEL     var10         var15b
+      * var15b = '012' (length=3)
+     C                   MOVE      *On           *inlr

@@ -1,0 +1,14 @@
+     /free
+      // The following expression uses no parentheses.
+      Answer = 21 + 10 * 3 - 30 / 3;
+      //   The multiply and divide are done first, so:
+      Answer = 21 + 30 - 10; // (Intermediate work)
+      Answer = 41;           // Final answer
+
+      // Using parentheses:
+      Answer = (21 + 10) * (3 - 30) /3;
+      //   Parentheses math is done first, so:
+      Answer = 31 * -27/3;   // (Intermediate work)
+      Answer = -279;         // Final answer
+
+     /end-free

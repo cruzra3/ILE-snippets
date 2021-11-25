@@ -1,0 +1,20 @@
+      * The following example checks that FIELD contains only the letters
+      * A to J. As a result, ARRAY=(136000) after the CHECK operation.
+      * Indicator 90 turns on.
+      *
+     DArray            S              1S 0 Dim(6)
+     D Letter          C                   'ABCDEFGHIJ'
+     D
+      *
+     C
+     C                   MOVE      '1A=BC*'      Field             6
+     C     Letter        CHECK     Field         Array                    90
+     C
+      *
+      * In the following example, because FIELD contains only the
+      * letters A to J, ARRAY=(000000). Indicator 90 turns off.
+      *
+     C
+     C                   MOVE      'FGFGFG'      Field             6
+     C     Letter        CHECK     Field         Array                    90
+     C                   EVAL      *INLR = *ON

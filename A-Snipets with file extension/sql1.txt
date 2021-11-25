@@ -1,0 +1,201 @@
+     H
+      *-------------------------------------------------------------------------
+      * PROGRAM NAME  : XXXXXXXXXX
+      * DESCRIPTION   : XXXXXXXXXXXXXXXXX
+      * CREATION DATE : 03/26/2008
+      * PROGRAMMER    : Rafael Angel Cruz
+      * PURPOSE       : XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+      *                 XXXXXXXXXXXXXXXXX
+      *-------------------------------------------------------------------------
+      * Maintenance Log
+      *--------------------------------------------------------------------
+      *----------------------------------------------------------------
+      * Files
+      *----------------------------------------------------------------
+     FVOICHK    IF   E           K DISK
+     FACCIVU    UF   E           K DISK
+     FIVUVOIDP  O    E             PRINTER INFDS(PRINFO)
+     F                                     OFLIND(*IN99)
+
+     DFMT1           E DS                  EXTNAME( PSCBREP )
+
+      * DETAIL PRINTER FILE DS
+     DPRINFO           DS
+     D  @OVER#               188    189B 0
+     D  @LINE#               367    368B 0
+     D  @PAGE#               369    372B 0
+
+      * JOB DATA STRUCTURE
+     D                SDS
+     D  @JOB                 244    253
+     D  @USER                254    263
+     D  @JOBN                264    269  0
+     D  @DATE                276    281  0
+     D  @TIME                282    287  0
+     D  @PGMNAM          *PROC
+     D  @MSGTXT              117    170
+
+      * DETAIL LINE DATE FORMATTED
+     D                 DS
+     D  $DT                    1      8
+     D  $MM                    1      2
+     D  $DSH1                  3      3
+     D  $DD                    4      5
+     D  $DSH2                  6      6
+     D  $YY                    7      8
+     D$TEMP8           S              8A
+
+
+      *---------------------------------------------------------------------
+      * MAINLINE
+      *---------------------------------------------------------------------
+
+      * FIRST TIME, USER AND PROGRAM
+     C                   MOVEL     @PGMNAM       PRGNAM
+     C                   MOVEL     @USER         $USER
+     C                   EXSR      PRTHD
+
+      * LOOP THRU VOICHK FILE
+     C     *LOVAL        SETLL     VOICHK
+     C                   DOW       '1' = '1'
+     C                   CLEAR                   VCHECK
+     C                   READ      VOICHK
+     C                   IF        %EOF( VOICHK )
+     C                   LEAVE
+     C                   ENDIF
+
+     C                   EXSR      LOOPPSCB
+     C                   EXSR      DELPSCB
+     C                   EXSR      DELACCIVU
+     C                   ENDDO
+
+     C                   MOVE      *ON           *INLR
+
+      *---------------------------------------------------------------------
+      *
+     C     PRTHD         BEGSR
+      *---------------------------------------------------------------------
+     C                   WRITE     HD1
+     C                   WRITE     HD2
+     C                   WRITE     HD3
+     C                   WRITE     HD4
+     C                   WRITE     HD5
+     C                   WRITE     HD6
+     C                   WRITE     HD7
+     C                   WRITE     HD8
+     C                   ENDSR
+
+      *---------------------------------------------------------------------
+      *
+     C     LOOPPSCB      BEGSR
+      *---------------------------------------------------------------------
+
+     C/EXEC SQL
+     C+ DECLARE C1 CURSOR FOR SELECT * FROM PSCBREP WHERE CBK9NB = :VCHECK
+     C/END-EXEC
+
+     C/EXEC SQL
+     C+        OPEN C1
+     C/END-EXEC
+
+     C     SQLCOD        DOUEQ     100
+
+     C/EXEC SQL
+     C+        FETCH C1 INTO :FMT1
+     C/END-EXEC
+
+     C     SQLCOD        IFNE      100
+     C                   EXSR      LOADLINE
+     C                   ENDIF
+
+     C                   ENDDO
+     C/EXEC SQL
+     C+        CLOSE C1
+     C/END-EXEC
+
+     C                   ENDSR
+
+      *---------------------------------------------------------------------
+      *
+     C     LOADLINE      BEGSR
+      *---------------------------------------------------------------------
+      * INVOICE NUMBER
+     C                   MOVEL     CBFDTX        $INV#
+
+      * PURCHASE ORDER NUMBER
+     C                   MOVEL     CBC3CD        $PO#
+
+      * PURCHASE ORDER NUMBER LINE
+     C                   MOVEL     CBCZNB        $POLIN
+
+      * INVOICE PAYMENT DATE
+     C*                  MOVEL     CBFFTX        $IPYDT
+     C                   CLEAR                   $DT
+     C                   CLEAR                   $TEMP8
+     C                   MOVEL     CBFFTX        $TEMP8
+     C     2             SUBST     $TEMP8:5      $MM
+     C     2             SUBST     $TEMP8:7      $DD
+     C     2             SUBST     $TEMP8:3      $YY
+     C                   MOVE      '/'           $DSH1
+     C                   MOVE      '/'           $DSH2
+     C                   MOVEL     $DT           $IPYDT
+      * SUPPLIER
+     C                   MOVEL     CBSPCD        $SUP
+
+      * COST EXTENSION
+     C*                  Z-ADD     CBBGPR        $INVAMT
+
+      * INVOICE AMOUNT
+     C                   Z-ADD     CBBHPR        $INVAMT
+
+      * ACTUAL   MUNICIPAL SALES TAX
+     C                   Z-ADD     CBETVA        $MUTXAMT
+
+      * ACTUAL STATE SALES TAX
+     C                   Z-ADD     CBEUVA        $STTXAMT
+
+      * TOTAL TAX AMOUNT
+     C                   Z-ADD     CBEWVA        $TOTXAMT
+
+      * CHECK NUMBER
+     C                   MOVEL     CBK9NB        $CK#
+
+     C                   EXSR      OVRFLOW
+     C                   WRITE     DT1
+     C                   CLEAR                   DT1
+     C                   ENDSR
+
+      *---------------------------------------------------------------------
+      *
+     C     OVRFLOW       BEGSR
+      *---------------------------------------------------------------------
+
+     C     @PAGE#        IFEQ      *ZERO
+     C     @LINE#        ORGE      @OVER#
+     C     *IN99         OREQ      *ON
+     C                   EXSR      PRTHD
+     C                   MOVE      *OFF          *IN99
+     C                   ENDIF
+     C                   ENDSR
+
+      *---------------------------------------------------------------------
+      *
+     C     DELPSCB       BEGSR
+      *---------------------------------------------------------------------
+
+     C/EXEC SQL
+     C+ DELETE FROM PSCBREP WHERE CBK9NB = :VCHECK
+     C/END-EXEC
+
+     C                   ENDSR
+
+      *---------------------------------------------------------------------
+      *
+     C     DELACCIVU     BEGSR
+      *---------------------------------------------------------------------
+
+     C/EXEC SQL
+     C+ DELETE FROM ACCIVU WHERE ICHKNU = :VCHECK
+     C/END-EXEC
+
+     C                   ENDSR

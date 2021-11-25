@@ -1,0 +1,5 @@
+     Option     CASLT     7          Addsubr
+     Option     CASEQ     8          Chgsubr
+     Option     CASEQ     9          Delsubr
+                CAS                  Errsubr
+                ENDCS

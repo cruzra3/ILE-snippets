@@ -1,0 +1,22 @@
+      *
+	  * Examples of If, Elseif, Else, and Endif
+	  * 
+
+     /free
+      If  A = B;                // Simple If, Else, and Endif
+        FieldA = FieldB;
+      Else;
+        FieldA = *Zero;
+      Endif;
+
+             // An If, Elseif, Else, and Endif group
+      If Option = 'A' and (Type = 3 or Company = 73);
+        Value = 1;
+      Elseif Option = 'B' and (Type = 3 or Company = 75);
+        Value = 2;
+      Elseif Option = 'C' and (Type = 1 or Company = 99);
+        Value = 3;
+      Else;
+        Value = 4;
+      Endif;
+     /end-free

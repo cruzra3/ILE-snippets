@@ -1,0 +1,17 @@
+    D String1     S      12      Inz('I ate eggs')
+    D String2     S       4      Inz('corn')
+    D Answer      S      20
+
+      /free
+       // Replace only
+       Answer = %replace(String2:String1:7:%len(String2));
+       // Answer = 'I ate corn          '
+       
+       // Insert characters in a string
+       Answer = %replace('4 ':Answer:7:0);
+       // Answer = 'I ate 4 corn        '
+       
+       // Delete characters from a string
+       Answer = %replace('':Answer:7:2);
+       // Answer = 'I ate corn          '
+      /end-free

@@ -1,0 +1,69 @@
+Value keyword example —
+
+Calling program:
+     D Order_Print         PR             Extproc('ORDPRT')
+     D  Custnum                   9  0    Value
+     D  OrdNum                    7  0    Value
+
+      /free
+       CallP Order_Print(CustomerNo:OrderNo);
+       ...
+
+Called program ('ORDPRT'):
+     F OrderFile  IF   E          K         Disk
+     D Order_Print         PR
+     D  Custnum                   9  0   Value
+     D  Ordnum                    7  0   Value
+     D Order_Print         PI
+     D  Custnum                   9  0   Value
+     D  OrdNum                    7  0   Value
+      /free
+       Chain (Custnum:OrdNum) OrderFile;
+       If not %found;
+         // Error routine
+       Else;
+         // Process order
+       Endif;
+
+Const keyword example —
+
+Calling program:
+     D Wkly_St_T           PR             Extpgm('PAY483')
+     D  St_Taxable                9S 2    Const
+     D  St_Exempt                 3S 0    Const
+     D  St_Extra                  9S 2    Const
+     D  S_Tax                     9  2
+      *
+     D FTGross             s      7  2
+     D StateAdd            s      5  2
+     D StateExem           s      3  0
+     D StateExtra          s      5  2
+     D StateTax            s      9  2
+
+      /free
+       CallP Wkly_St_T(FTGross+StateAdd:StateExem:
+             StateExtra:StateTax);
+       ...
+
+Called program:
+     D Wkly_St_T           PR
+     D  St_Taxable                9S 2    Const
+     D  St_Exempt                 3S 0    Const
+     D  St_Extra                  9S 2    Const
+     D  S_Tax                     9  2
+     D Wkly_St_T           PI
+     D  St_Taxable                9S 2    Const
+     D  St_Exempt                 3S 0    Const
+     D  St_Extra                  9S 2    Const
+     D  S_Tax                     9  2
+      *
+     D New_Taxable         s      9  2
+
+      /free
+       New_Taxable = St_Taxable – (St_Exempt * 29.75);
+       If New_Taxable > *zero;
+         S_tax = New_Taxable * .05;
+       Else;
+         S_Tax = *zero;
+       Endif;
+

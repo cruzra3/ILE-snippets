@@ -1,0 +1,15 @@
+     /free
+      Exfmt Screen;
+      Select;
+        When exit;        // User presses F3 – exit
+        When update_req;  // User presses F8 for update
+          Exsr Verify_data;  // Verify data first
+          If no_error;    // Data okay?
+            Exsr Update_Rec;  // Go ahead and update
+          Endif;
+        When cancel;      // User presses F12 – previous
+          Message = 'Function canceled by user.';
+        Other;            // Enter key pressed
+          Exsr Verify_data;  // Verify data
+      Endsl;
+      // Control comes here after one of When's or Other.

@@ -1,0 +1,19 @@
+      *
+      * Example of MOVEL from fixed to variable length
+      * for character fields
+      *
+     D var5            S              5A   INZ('ABCDE') VARYING
+     D var10           S             10A   INZ('0123456789') VARYING
+     D var15a          S             15A   INZ('FGHIJKLMNOPQR') VARYING
+     D var15b          S             15A   INZ('WXYZ') VARYING
+     D fix10           S             10A   INZ('PQRSTUVWXY')
+      *
+     C                   MOVEL     fix10         var5
+      * var5 = 'PQRST' (length=5)
+     C                   MOVEL     fix10         var10
+      * var10 = 'PQRSTUVWXY' (length=10)
+     C                   MOVEL     fix10         var15a
+      * var15a = 'PQRSTUVWXYPQR' (length=13)
+     C                   MOVEL     fix10         var15b
+      * var15b = 'PQRS' (length=4)
+     C                   MOVE      *On           *inlr

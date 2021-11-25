@@ -1,0 +1,23 @@
+     D
+     D   yyddd         S              5S 0
+     D   yyyymmdd      S              8P 0
+     D   hhmmss        S              6P 0
+     D   numeric       S             20S 0
+     D   date          S               D   inz(D'2003-06-27') DATFMT(*USA)
+     D   time          S               T   inz(T'09.25.59')
+     D   timestamp     S               Z   inz(Z'2003-06-27-09.25.59.123456')
+      /free
+
+          // Using the format of the first parameter
+
+          numeric = %dec(date);          //   numeric = 06272003
+          numeric = %dec(time);           //   numeric = 092559
+          numeric = %dec(timestamp);      //   numeric = 20030627092559123456
+
+
+          // Using the second parameter to specify the result format
+
+          yyddd = %dec(date : *jul);      //   yyddd = 03178
+          yyyymmdd = %dec(date : *iso);   //   yyyymmdd = 20030627
+      /end-free
+     C                   Eval      *Inlr = *On

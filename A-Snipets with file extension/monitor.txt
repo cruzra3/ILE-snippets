@@ -1,0 +1,41 @@
+      * *PROGRAM Handles all program-error status codes, from 00100 to 00999
+      * *FILE Handles all file-error status codes, from 01000 to 09999
+      * *ALL Handles both program-error and file-error codes, from 00100 to
+      *  09999. This is the default.
+
+      * The MONITOR block consists of the READ statement and the IF
+      * group.
+      * - The first ON-ERROR block handles status 1211 which
+      * is issued for the READ operation if the file is not open.
+      * - The second ON-ERROR block handles all other file errors.
+      * - The third ON-ERROR block handles the string-operation status
+      * code 00100 and array index status code 00121.
+      * - The fourth ON-ERROR block (which could have had a factor 2
+      * of *ALL) handles errors not handled by the specific ON-ERROR
+      * operations.
+      *
+      * If no error occurs in the MONITOR block, control passes from the
+      * ENDIF to the ENDMON
+     FPSPOHL0   IF   E             DISK
+     DI                S              3  0 INZ(1)
+     DLINE             S              1A   Dim(15) INZ
+     C                   MONITOR
+     C                   READ      @POHA7
+     C                   IF        NOT %EOF
+     C                   EVAL      Line = %SUBST(Line(i) :
+     C                             %SCAN('***': Line(i)) + 1)
+     C                   ENDIF
+     C                   ON-ERROR  1211
+     C*                  ... handle file-not-open
+     C                   ON-ERROR  *FILE
+     C*                  ... handle other file errors 01000 09999
+     C                   ON-ERROR  00100 : 00121
+     C*                  ... handle string error and array-index error
+     C                   ON-ERROR
+     C*                  ... handle all other errors
+     C****               ON-ERROR  *PROGRAM
+     C*                  ... handle PROGRAM errors (00100 00999)
+     C****               ON-ERROR  *ALL
+     C*                  ... handle ALL errors   (00100 09999)
+     C                   ENDMON
+     C                   EVAL      *INLR = *ON

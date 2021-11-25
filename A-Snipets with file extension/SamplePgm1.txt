@@ -1,0 +1,133 @@
+A100XXXC            Investment and Loan Utility              6/18/05
+JIM                                                            43:27
+
+                          Investment Computations
+
+              Initial Investment Amount:   __________
+         Annual interest rate (decimal):   .00000
+                      Number of periods:     0
+          Investment amount each period:   __________
+
+  Value of Investment at the conclusion:         .00
+
+                             Loan Computations
+                    
+                       Amount to Borrow:   __________
+         Annual interest rate (decimal):    .00000
+                      Number of periods:   ___
+               *OR*      Payment Amount:   __________
+                      Total of Payments:          .00
+
+
+    F3 = Exit      Enter to run
+	
+	
+	
+	    FIandL     cf   e             workstn indds(inds)
+
+    d inds            ds
+    d  exit                           n    overlay(inds:3)
+
+    D Merr            s               n
+    D n               s              4  0
+    D i               s             10 10
+    D FVsing          s             11  2
+    D FVann           s             11  2
+    d PerRate         s                    like(invannrate)
+    d ThisPayment     s                    like(Loanpaymnt)
+    d RemBalance      s                    like(LoanAmount)
+    d PerInterest     s               7  2
+
+     /free
+      Dou exit;                      // Loop until F3
+        Exfmt riandl;                //   Bring up screen
+        Clear Errmsg;                //   Clear error message
+        Clear Merr;                  //   Clear error flag
+        Clear TotInvest$;            //   Clear investment total
+
+        If not exit;                 //   Check for F3 - exit
+          If (invannrate > 0 and InvestAmt > 0) or
+            (invannrate > 0 and Invperdamt > 0); // All fields OK
+
+            n = invperiods;   // Set n - number of periods
+            eval(hr) i = invannrate/12;  // Compute monthly rate
+            eval(hr) FVsing = Investamt * ((1+i) ** n); // FV single
+            eval(hr) FVann = Invperdamt * (((1+i)** n - 1)/i); // Ann
+            TotInvest$ = FVsing + FVann; // Sum of single and annual
+
+          Elseif (InvestAmt > 0 and Invannrate = 0) or
+              (Invperdamt > 0 and Invannrate = 0);
+          Errmsg = 'Error on Investment parameters'; // Error msg
+          Merr = *On;                                // Error flag
+        Endif;
+
+        Clear LoanTpaymt;
+        Select;
+          When LoanPeriod > 0 and LoanAmount > 0 and LoanAnnrat > 0;
+            Exsr CalcPayment;
+          When LoanPaymnt > 0 and LoanAmount > 0 and LoanAnnrat > 0;
+            Exsr CalcNumber;
+          Other;
+            If LoanAmount > 0;
+              If Merr;
+               Errmsg='Errors on both Investment and Loan parameters';
+              Else;
+                ErrMsg = 'Error on Loan parameters';
+              Endif;
+            Endif;
+        Endsl;
+
+      Endif;
+    Enddo;
+    *Inlr = *On;
+
+    // Begin subroutines
+
+    //   Calculate a loan payment subroutine
+
+    Begsr CalcPayment;
+    Eval(hr) PerRate = LoanAnnrat / 12;      // Get periodic rate
+    Eval(hr) LoanPaymnt = LoanAmount * (PerRate /
+                  (1 - ((1.0 + PerRate) ** (LoanPeriod*-1))));
+    Eval(h)  LoanTpaymt = LoanPaymnt * LoanPeriod;
+    Endsr;
+
+    //_______________________________
+
+    //   Calculate number of payments subroutine
+
+    Begsr CalcNumber;
+    RemBalance = LoanAmount;
+    Clear LoanTPaymt;
+    Clear LoanPeriod;
+    Eval(hr) PerRate = LoanAnnrat / 12;    // Get periodic rate
+
+    If LoanPaymnt > 0;
+      If RemBalance + (RemBalance*PerRate) - LoanPaymnt
+                                          >= RemBalance;
+        Errmsg ='Loan payment amount +
+                      insufficient, please increase amount';
+        Leavesr;
+      Endif;
+
+      Dou RemBalance = 0;     // Computation loop
+        Eval(h)  PerInterest = RemBalance * PerRate;
+
+        If LoanPaymnt <= RemBalance + PerInterest;
+          ThisPayment = LoanPaymnt;
+          RemBalance  = RemBalance + PerInterest - ThisPayment;
+
+        Else;
+          ThisPayment = RemBalance + PerInterest;
+          RemBalance  = *zero;
+        Endif;
+
+        LoanTpaymt = LoanTpaymt + ThisPayment;
+        LoanPeriod = LoanPeriod + 1;
+
+      Enddo;
+    Endif;
+
+    Endsr;
+
+   /End-free

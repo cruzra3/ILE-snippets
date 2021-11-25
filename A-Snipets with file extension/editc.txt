@@ -1,0 +1,57 @@
+     D msg             S             50A
+     D salary          S              9P 2 INZ(1000)
+     D num             S              9P 2 INZ(1234567.89)
+      * If the value of salary is 1000, then the value of salary * 12
+      * is 12000.00. The edited version of salary * 12 using the A edit
+      * code with floating currency is ' $12,000.00 '.
+      * The value of msg is 'The annual salary is $12,000.00'
+     C                   EVAL      msg = 'The annual salary is '
+     C                             + %trim(%editc(salary * 12
+     C                             :'A': *CURSYM))
+      * In the next example, the value of msg is 'The annual salary is
+      * &12,000.00'
+     C                   EVAL      msg = 'The annual salary is '
+     C                             + %trim(%editc(salary * 12
+     C                             :'A': '&'))
+      * In the next example, the value of msg is 'Salary is $*****12,000.00'
+      * Note that the '$' comes from the text, not from the edit code.
+     C                   EVAL      msg = 'Salary is $'
+     C                             + %trim(%editc(salary * 12
+     C                             :'B': *ASTFILL))
+      * In the next example, the value of msg is 'The date is 1/14/1999'
+     C                   EVAL      msg = 'The date is '
+     C                             + %trim(%editc(*date : 'Y'))
+
+     C                   EVAL      msg = '%editc(num : "1") = ' +
+     C                             %trim(%editc(num : '1'))
+     c                   dsply                   msg
+
+     C                   EVAL      msg = '%editc(num : "2") = ' +
+     C                             %trim(%editc(num : '2'))
+     c                   dsply                   msg
+
+     C                   EVAL      msg = '%editc(num : "3") = ' +
+     C                             %trim(%editc(num : '3'))
+     c                   dsply                   msg
+
+     C                   EVAL      msg = '%editc(num : "4") = ' +
+     C                             %trim(%editc(num : '4'))
+     c                   dsply                   msg
+
+     C                   EVAL      msg = '%EDITC(-0012.5 : "K" : *ASTFILL) = ' +
+     C                             %trim(%EDITC(-0012.5 : 'K' : *ASTFILL))
+     c                   dsply                   msg
+
+     C                   EVAL      msg = '%EDITC(0012.5 : "K" : *CURSYM) = ' +
+     C                             %trim(%EDITC(0012.5 : 'K' : *CURSYM))
+     c                   dsply                   msg
+
+     C                   EVAL      msg = '%EDITC(0012.5 : "K" : "X") = ' +
+     C                             %trim(%EDITC(0012.5 : 'K' : 'X'))
+     c                   dsply                   msg
+
+     C                   EVAL      msg = '%EDITC(NUM : "A" : "$") = ' +
+     C                             %trim(%EDITC(NUM : 'A' : '$'))
+     c                   dsply                   msg
+
+     C                   EVAL      *INLR = *ON

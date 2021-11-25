@@ -1,0 +1,13 @@
+     D GetBalDue       Pr
+     D Balance                       11P 2
+     D CustNo                         5S 0
+     D Qty                            7P 0
+     D Amount                         5p 2
+     D Balance         S             11P 2
+     D CustNo          S              5S 0
+     D OrdQty          S              7P 0
+     D Amt             S              5p 2
+      /free
+       Eval Result = GetBalDue(Balance:CustNo:OrdQty:Amt)
+       *Inlr = *On;
+      /end-free

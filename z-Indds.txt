@@ -1,0 +1,30 @@
+ * Indicator data structure "DispInds" is associated to file "Disp".
+FDisp      CF   E             WORKSTN INDDS (DispInds)
+
+ * This is the indicator data structure:
+ *
+D DispInds        DS
+ * Conditioning indicators for format "Query"
+D    ShowName             21    21N
+ * Response indicators for format "Query"
+D    Exit                  3     3N
+D    Return               12    12N
+D    BlankNum             31    31N
+ * Conditioning indicators for format "DispSflCtl"
+D    SFLDSPCTL            41    41N
+D    SFLDSP               42    42N
+D    SFLEND               43    43N
+D    SFLCLR               44    44N
+
+ *
+ * Set indicators to display the subfile:
+C                   EVAL      SFLDSP = *ON
+C                   EVAL      SFLEND = *OFF
+C                   EVAL      SFLCLR = *OFF
+C                   EXFMT     DispSFLCTL
+ *
+ * Using indicator variables, we can write more readable programs:
+C                   EXFMT     Query
+C                   IF        Exit or Return
+C                   RETURN
+C                   ENDIF

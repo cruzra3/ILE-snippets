@@ -1,0 +1,22 @@
+    P DateCV67            B
+    D DateCV67            PI     7  0
+    D  Date6                     6  0
+    D  ErrorFlag                  n
+     *
+    D Workdate                    d
+
+     /free
+      // Convert a 6-digit date of the format MMDDYY to
+      // to long Julian. For date errors, return a zero
+      // date and an ErrorFlag set to *On. If no error,
+      // return the date and ErrorFlag set to *Off.
+      Monitor;
+        Workdate = %date(Date6:*MDY);
+        On-Error *All;
+          ErrorFlag = *On;
+          Return *zero;
+      EndMon;
+      ErrorFlag = *Off;
+      Return %int(Workdate:*LongJul);
+     /end-free
+    P                      E

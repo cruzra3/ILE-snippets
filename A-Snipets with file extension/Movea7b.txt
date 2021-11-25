@@ -1,0 +1,10 @@
+     /free
+      For j = 1 to %elem(Array1); // Loop  1 to 100 
+        %subst(Array2(i):j:1) = Array1(j); // Move 1 char
+      Endfor;
+
+      // Another solution using %subarr and a based array
+      // template
+
+      Ptr = %addr(Array2(i));  // Point to Array2 element
+      Arx = %subarr(Array1:1); // Move array to array

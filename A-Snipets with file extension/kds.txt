@@ -1,0 +1,14 @@
+     Fpspohl0   if   e           k disk    rename( @POHA7 : ohrec )
+     D ohkey           ds                  likerec( ohrec : *key )
+     D x               s              3p 0
+      /free
+          // ohkey is a qualified data structure
+          ohkey.ohbncd = 'P60S27929';
+          ohkey.ohcnnb =  000;
+          // the *KEY data structure is used as the search argument for chain
+          chain %kds(ohkey) ohrec;
+          if %found( pspohl0 );
+              x = 1;
+          endif;
+      /end-free
+     C                   EVAL      *INLR = *ON

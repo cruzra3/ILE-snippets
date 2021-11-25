@@ -1,0 +1,34 @@
+     H TIMFMT(*USA) DATFMT(*MDY&)
+    * *
+     D Dateconst       C                   CONST(D'12 31 92')
+      *
+      * Define a Date field and initialize
+      *
+     DLoandate         S               D   DATFMT(*EUR) INZ(D'12 31 92')
+     DDuedate          S               D   DATFMT(*ISO)
+     Dtimestamp        S               Z
+     Danswer           S               T
+     DLOANDUE          S               D   DATFMT(*ISO)
+     DXX               S              2  0 INZ(1)
+     DYY               S              2  0 INZ(12)
+     DZZ               S              3  0 INZ(365)
+      * Determine a DUEDATE which is xx years, yy months, zz days later
+      * than LOANDATE.
+     C     LOANDATE      ADDDUR    XX:*YEARS     DUEDATE
+     C                   ADDDUR    YY:*MONTHS    DUEDATE
+     C                   ADDDUR    ZZ:*DAYS      DUEDATE
+      * Determine the date 23 days later
+      *
+     C                   ADDDUR    23:*D         DUEDATE
+      * Add a 1234 microseconds to a timestamp
+      *
+     C                   ADDDUR    1234:*MS      timestamp
+      * Add 12 HRSand 16 minutes to midnight
+      *
+     C     T'00:00 am'   ADDDUR    12:*Hours     answer
+     C                   ADDDUR    16:*Minutes   answer
+      * Subtract 30 days from a loan due date
+      *
+     C     *ISO          MOVE      '2008-01-01'  LOANDUE
+     C                   ADDDUR    -30:*D        LOANDUE
+     C                   EVAL      *INLR = *ON

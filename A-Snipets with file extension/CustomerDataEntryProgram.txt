@@ -1,0 +1,210 @@
+A100XXXC               Customer Data Entry                6/18/05
+JIM                                                      14:21:09
+
+1 ........   Customer Number:  ________
+2 ........            Status:  _ (Can only be 'A' or 'I')
+3 ........     Customer Name:  ____________________________
+4 ........    Address Line 1:  __________________________
+5 ........    Address Line 2:  __________________________
+6 ........              City:  ____________________
+7 ........             State:  __
+8 ........          Zip Code:  _____ ____
+
+9 ........      Credit Limit:        .00
+10........  Telephone Number:  __________
+
+11........        Begin Date:  __ __ ____ (MM DD YYYY)
+
+
+ F3 = Exit      F8 = Write new record    Enter = Edit data
+ 
+ 
+       H option(*srcstmt)
+       FCstdatent cf   e            workstn indds(Inds)
+       FCustomerP If a e          k disk
+ 
+       d               sds
+       d pgmq             *PROC
+ 
+       D Inds            ds
+       D Exit                          n   overlay(Inds:3)
+       D Write_Rec                     n   overlay(Inds:8)
+       D Cust_Num_Err                  n   Overlay(Inds:41)
+       D Status_Err                    n   Overlay(Inds:42)
+       D Name_Err                      n   Overlay(Inds:43)
+       D City_Err                      n   Overlay(Inds:46)
+       D State_Err                     n   Overlay(Inds:47)
+       D Zip_Err                       n   Overlay(Inds:48)
+       D Phone_Err                     n   Overlay(Inds:50)
+       D Date_Err                      n   Overlay(Inds:51)
+  
+       D State_Ary       s            2    Dim(50) CTdata Perrcd(10)
+        D Date8           s            8 0
+       D Workdate        s             d
+       D Work_Num        s            5  0
+       D Err_Write       s             n
+       d wkzipc          s            5  0
+       d wkzipec         s            4  0
+       d msgid           s            7
+       d lineno          s            2
+ 
+       d CLSend          pr                Extpgm('SENDMSG')
+       d  msgid                        7
+       d  lineno                       2
+       d CLClear         pr                Extpgm('CLEARMSG')
+        /free
+         Dou Exit;
+           Write Msgctl;                 // Write Subfile Control
+           Exfmt RCstdatent;             // Display entry panel
+           If not exit;
+             Exsr ClearMessages;
+             Exsr Clear_Inds;
+             Chain Custnum CustomerP;    // Check customer number
+             If %found(CustomerP);
+               Msgid = 'DTA0101';
+               Lineno = '1';
+               Exsr SendaMsg;
+               Cust_Num_Err = *On;       // Customer number error
+               Err_write = *On;
+             Else;
+               Clear Rcustomer;          //  Clear DB record
+               CustNumber = Custnum;
+             Endif;
+ 
+             If Custstat = 'A' or       // Check status
+                Custstat = 'I';
+               Custstatus = Custstat;
+             Else;
+               Msgid = 'DTA0102';
+               Lineno = '2';
+               Exsr SendaMsg;
+               Status_Err = *On;         // Status error
+               Err_write = *On;
+             Endif;
+ 
+             If CustNM = *Blank;         // Name
+               Msgid = 'DTA0103';
+               Lineno = '3';
+               Exsr SendaMsg;
+               Name_Err = *On;
+               Err_write = *On;
+             Else;
+               CustNM = %trim(CustNM);
+               CustName = %trim(CustNM);
+             Endif;
+ 
+             CustAdr1 = %trim(CustA1);     // Address Line 1
+             CustA1   = %trim(CustA1);     // Address Line 1
+             CustAdr2 = %trim(CustA2);     // Address Line 2
+             CustA2   = %trim(CustA2);     // Address Line 2
+ 
+             If Custcty = *Blank;
+               Msgid = 'DTA0104';
+               Lineno = '6';
+               Exsr SendaMsg;
+               City_Err = *On;
+               Err_write = *On;
+             Else;
+               CustCity = %trim(CustCty);
+               CustCty = %trim(CustCty);
+             Endif;
+  
+             If %lookup(CustSta:State_Ary:1) = *zero;
+               Msgid = 'DTA0105';
+               Lineno = '7';
+               Exsr SendaMsg;
+               State_Err = *On;
+               Err_write = *On;
+             Else;
+               CustState = CustSta;
+             Endif;
+ 
+             Exsr Check_zip;         // Check zip code & extension in subr
+ 
+             Custcrlimt = Custcrl;  // Credit Limit
+ 
+             If Custac < 99 or Custphn < 1000000;
+               Msgid = 'DTA0107';
+               Lineno = '10';
+               Exsr SendaMsg;
+               Phone_Err = *On;
+               Err_write = *On;
+             Else;
+               CustAreaCD = CustAC;
+               CustPhone  = CustPhn;
+             Endif;
+ 
+             Date8 = CustMon * 1000000 + CustDay * 10000 + CustYr;
+             Monitor;  // Check date conversion
+             Workdate = %date(Date8:*usa);
+             On-Error *All;
+               Msgid = 'DTA0108';
+               Lineno = '11';
+               Exsr SendaMsg;
+               Date_Err = *On;
+               Err_write = *On;
+             EndMon;
+             If not Date_Err;
+               CustDatMon = CustMon;
+               CustDatDay = CustDay;
+               CustDatYr = CustYr;
+             Endif;
+ 
+             If not Err_Write and Write_Rec; // Write new Cust Record
+               Write Rcustomer;
+             Endif;
+  
+           Endif;
+         Enddo;
+         *Inlr = *on;
+ 
+         Begsr Clear_Inds;
+         Clear Cust_Num_Err;
+         Clear Status_Err;
+         Clear Name_Err;
+         Clear City_Err;
+         Clear State_Err;
+         Clear Zip_Err;
+         Clear Phone_Err;
+         Clear Date_Err;
+         Clear Err_Write;
+         Endsr;
+ 
+         Begsr Check_Zip;
+         Monitor;
+         Work_Num = %int(CustZp);
+         If Custzpe <> *blank;
+           Work_Num = %int(Custzpe);
+         Endif;
+         On-Error *all;
+           Msgid = 'DTA0106';
+           Lineno = '8';
+           Exsr SendaMsg;
+           Zip_Err = *On;
+           Err_Write = *On;
+         EndMon;
+         If Not Zip_Err;
+           WkZipc = %int(CustZp);
+           Custzip = %editc(WkZipc:'X');
+         Custzp = %editc(WkZipc:'X');
+         If Custzpe <> *blank;
+           WkZipec  = %int(CustZpe);
+           Custzext = %editc(WkZipec:'X');
+           Custzpe  = %editc(WkZipec:'X');
+         Endif;
+       Endif;
+       Endsr;
+ 
+       Begsr Sendamsg;
+       Callp CLSend(MsgID:Lineno); // Call CL Pgm
+       Endsr;
+
+       Begsr ClearMessages;
+       Callp CLClear();            // Call CL Pgm
+       Endsr;
+**
+ALAKAZARCACOCTDEFLGA
+HIIDILINIAKSKYLAMEMD
+MAMIMNMSMOMTNENVNHNJ
+NMNYNCNDOHOKORPARISC
+SDTNTXUTVTVAWAWVWIWY

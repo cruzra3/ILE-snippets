@@ -1,0 +1,41 @@
+     D FieldA          S              5S 2 INZ(110.00)
+     D FieldB          S              5S 2 INZ(105.00)
+     D FieldC          S              5S 2 INZ(100.00)
+      *
+      * The CASGE operation compares FieldA with FieldB. If FieldA is
+      * greater than or equal to FieldB, Subr01 is processed and the
+      * program continues with the operation after the ENDCSoperation.
+      *
+     C     FieldA        CASGE     FieldB        Subr01
+      *
+      * If FieldA is not greater than or equal to FieldB, the program
+      * next compares FieldA with FieldC. If FieldA is equal to FieldC,
+      * SUBR02 is processed and the program continues with the operation
+      * after the ENDCSoperation.
+      *
+     C     FieldA        CASEQ     FieldC        Subr02
+      *
+      * If FieldA is not equal to FieldC, the CASoperation causes Subr03
+      * to be processed before the program continues with the operation
+      * after the ENDCSoperation.
+      * The CASstatement is used to provide a subroutine if none of
+      * the previous CASxx operations have been met.
+      *
+     C                   CAS                     Subr03
+      *
+      * The ENDCSoperation denotes the end of the CASgroup.
+      *
+     C                   ENDCS
+     C                   EVAL      *INLR = *ON
+      *-------------------------------------------------------------------------
+     C     Subr01        BegSr
+      *-------------------------------------------------------------------------
+     C                   EndSr
+      *-------------------------------------------------------------------------
+     C     Subr02        BegSr
+      *-------------------------------------------------------------------------
+     C                   EndSr
+      *-------------------------------------------------------------------------
+     C     Subr03        BegSr
+      *-------------------------------------------------------------------------
+     C                   EndSr

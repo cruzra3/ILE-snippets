@@ -1,0 +1,61 @@
+     D FIELD1          S              3  0 INZ(10)
+     D FIELD2          S              3  0 INZ(9)
+     D FIELD3          S              3  0 INZ(8)
+     D FIELD4          S              3  0 INZ(7)
+     D RESULT          S              7  2
+     D FORMATDATE      S             10A
+     D DATESTRNG1      S             10A
+     D DATE1           S             10A
+     D DATE2           S             10A
+     D DMYDATE         S               D   DATFMT(*DMY)
+     D ISODATE         S               D   DATFMT(*ISO)
+     D RES             S              3A
+     D PTR             S               *
+     D ARR             S              3  0 DIM(10)
+     D A               S             15    INZ('abcdefghijklmno')
+     D CHARFIELD1      S              5    INZ('THERE')
+      * Assume FIELD1 = 10
+      * FIELD2 = 9
+      * FIELD3 = 8
+      * FIELD4 = 7
+      * ARR is defined with DIM(10)
+      * *IN01 = *ON
+      * A = 'abcdefghijklmno' (define as 15 long)
+      * CHARFIELD1 = 'There' (define as 5 long)
+     C
+      /FREE
+             *IN01 = *ON;
+         // The content of RESULT after the operation is 20
+             eval RESULT = FIELD1 + FIELD2+(FIELD3-FIELD4);
+         // The indicator *IN03 will be set to *ON
+             *IN03 = *IN01 OR (FIELD2 > FIELD3);
+         // Each element of array ARR will be assigned the value 72
+             ARR(*) = FIELD2 * FIELD3;
+         // After the operation, the content of A = 'Hello There '
+             A = 'Hello ' + CHARFIELD1;
+         // After the operation the content of A = 'HelloThere '
+             A = %TRIMR('Hello ') + %TRIML(CHARFIELD1);
+         // Date in assignment
+             ISODATE = DMYDATE;
+         // Relational expression
+         // After the operation the value of *IN03 = *ON
+             *IN03 = FIELD3 < FIELD2;
+         // Date in Relational expression
+         // After the operation, *IN05 will be set to *ON if Date1 represents
+         // a date that is later that the date in Date2
+             *IN05 = Date1 > Date2;
+         // After the EVAL the original value of A contains 'ab****ghijklmno'
+             %SUBST(A:3:4)= '****';
+         // After the EVAL PTR has the address of variable CHARFIELD1
+             PTR = %ADDR(CHARFIELD1);
+         // An example to show that the result of a logical expression is
+         // compatible with the character data type.
+         // The following EVAL statement consisting of 3 logical expressions
+         // whose results are concatenated using the '+' operator
+         // The resulting value of the character field RESis '010'
+            RES = (FIELD1<10) + *in01 + (field2 >= 17);
+         // In this EVAL statement, the
+         // field DateStrng1 is assigned the VALUE of formatdate.
+            DateStrng1 = FormatDate;
+            *INLR = *ON;
+      /END-FREE

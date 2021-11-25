@@ -1,0 +1,14 @@
+    D Num1        S       7  2    Inz(7544.22-)
+    D Num2        S       5  0    Inz(00715)
+    D Answer      S      10
+
+     /free
+      // Convert a mixed number to character
+      Answer = %char(Num1);      // Answer = '7544.22-  '
+
+      // Convert a whole number with leading zeros: %char
+      Answer = %char(Num2);      // Answer = '715       '
+
+      // Convert a whole number with leading zeros: %editc
+      Answer = %editc(Num2:'X'); // Answer = '00715     '
+     /end-free

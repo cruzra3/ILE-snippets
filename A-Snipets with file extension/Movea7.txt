@@ -1,0 +1,9 @@
+     D Array1           s              1     Dim(100)
+     D Array2           s            100     Dim(50)
+     D i                s               5U 0
+     D j                s               5U 0
+     D Arx              s                    Dim(100)
+     D                                       Like(Array1)
+     D                                       Based(Ptr)
+
+     C                   MoveA  Array1        Array2(i)

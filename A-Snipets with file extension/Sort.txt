@@ -1,0 +1,11 @@
+     /free
+       For i = 1 to n;      // Outer loop
+        For j = 1 to n-1;  // Inner loop
+          If Array(j+1) < Array(j);  // Out of order?
+            SaveElem   = Array(j);   // Yes – swap elements
+            Array(j)   = Array(j+1); //  |
+            Array(j+1) = SaveElem;   //  |
+          Endif;
+        Endfor;
+      Endfor;
+     /end-free

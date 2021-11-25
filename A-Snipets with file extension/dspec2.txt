@@ -1,0 +1,13 @@
+     D* Myarray has 20 elements, each is 5 digits long
+     DMyarray          S              5  0 DIM(20)
+
+     D* Array2 is a compile time array with 6 elements, each element
+     D* 10 char long, in ascending order, 3 elements per record
+     DArray2           S             10    DIM(6) CTDATA PERRCD(3)
+
+      *-------------------------------------------------------------------------
+     C                   Eval      *InLr = *On
+      *The specifications for the compile-time array Array2 are:
+** CTDATA(Array2)
+AAAAAAAAAABBBBBBBBBBCCCCCCCCCC
+DDDDDDDDDDEEEEEEEEEEFFFFFFFFFF

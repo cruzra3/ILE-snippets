@@ -1,0 +1,27 @@
+     D Ptr1            S               *
+     D Ptr2            S               *
+     D Error           S              3A
+     C                   ALLOC     7             Ptr1
+      * Now Ptr1 points to 7 bytes of storage
+      *
+     C                   ALLOC (E) 12345678      Ptr2
+     C                   If        %Error = '1' or %Status = 00426
+     C                   Eval      Error = 'Yes'
+     C                   Else
+     C                   Eval      Error = ' '
+     C                   endIf
+      * This is a large amount of storage, and sometimes it may
+      * be unavailable. If the storage could not be allocated,
+      * %ERROR will return '1', the status is set to 00426, and
+      * %STATUS will return 00426
+      /FREE
+       // Allocate an area of 200 bytes
+          Ptr1 = %ALLOC(7);
+          Ptr2 = %ALLOC(12345678);
+              If  %Error = '1' or %Status = 00426;
+                  Error = 'Yes';
+              Else;
+                  Error = ' ';
+              EndIf;
+      /END-FREE
+     C                   EVAL      *INLR = *ON

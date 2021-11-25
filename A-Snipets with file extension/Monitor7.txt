@@ -1,0 +1,18 @@
+     /free
+      Monitor;
+        Read FileA;
+        If Not %eof(FileA);
+          Longjdate = %dec(%date(date6:*MDY0):*Longjul);
+          Pointer = %alloc(many_bytes);
+        Endif;
+        On-error 1211;
+          // Handle "file not open yet" condition
+        On-error *File;
+          // Handle any other file errors
+        On-error 112:113:114;
+          // Handle date errors
+        On-error 425:426;
+          // Handle storage allocation errors
+        On-error;
+          // Handle all other errors
+        Endmon;

@@ -1,0 +1,43 @@
+     /free
+
+      // The following Exfmt sends the "Prompt" record
+      // to the workstation and waits for the response.
+
+      Exfmt Prompt Display_F;
+
+
+      // The Write operation sends a record to a buffer.
+      // The requested functions are performed, but data
+      // is not displayed now. In subfile programming, a
+      // "Trailer" record is written before issuing a
+      // write/read for the "Control" record.
+
+      Write Trailer;
+      Exfmt Control;
+
+
+      // Using Intersystem Communications Facility (ICF),
+      // a Read is used (by file name) to access data
+      // from any invited communications device.
+      // The file is an ICF file and uses the Workstn
+      // device in the RPG IV file description.
+
+      Read(e) Comm_File;
+
+      // After the Read, either a data record has been
+      // received or a time-out has occurred. You can use
+      // the %error built-in to determine which is the
+      // case.
+
+
+      // The Dsply operation lets you communicate with
+      // the user. The operation can display a message
+      // and accept a response to an interactive user
+      // or to the system operator if running in batch.
+      // The following question will be sent to the
+      // external message queue, and the response
+      // will be returned in field Food.
+
+      Dsply ('What''s for Lunch?') ' ' Food);
+      
+     /end-free

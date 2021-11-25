@@ -1,0 +1,28 @@
+      *
+      * When you use a data structure to group fields, fields from
+      * non-adjacent locations on the input record can be made to occupy
+      * adjacent internal locations. The area can then be referred to by
+      * the data structure name or individual subfield name.
+      *
+     D Partkey         DS
+     D Location                       4
+     D Partno                         8
+     D Type                           4
+      *
+      * Fields from program described file TRANSACTN need to be
+      * compared to the field retrieved from an Item_Master file
+      *
+     ITRANSACTN NS  01    1 C1    2 C2
+     I                                  3   10  Partno
+     I                                 11   16 0Quantity
+     I                                 17   20  Type
+     I                                 21   21  Code
+     I                                 22   25  Location
+      *
+      * Use the data structure name Partkey, to compare to the field
+      * Item_Nbr
+      *
+     C*
+     C     Partkey       IFEQ      Item_Nbr
+     C                   Endif
+     C                   Eval      *InLr = *On

@@ -1,0 +1,15 @@
+    FFileA     IF   E           Disk         Usropn
+    D OvrFileB        s            80   Inz('OVRDBF -
+                                        FILE(FILEA) –
+                                        TOFILE(FILEB)')
+    D OVRDBF          PR                Extpgm('QCMDEXC')
+    D  String                 1000      Const
+                                        Options(*Varsize)
+    D  Len                      15P 5  Const
+
+     /free
+      CallP Ovrdbf(OvrfileB:%len(OvrfileB));
+      Open FileA;
+      // FileB will be opened, due to the override
+      ...
+     /end-free

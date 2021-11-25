@@ -1,0 +1,55 @@
+     H DATFMT(*ISO)
+      *
+     D DATE_ISO        S               D
+     D DATE_YMD        S               D   DATFMT(*YMD)
+     D                                     INZ(D'1992-03-24')
+     D DATE_EUR        S               D   DATFMT(*EUR)
+     D                                     INZ(D'2197-08-26')
+     D DATE_JIS        S               D   DATFMT(*JIS)
+     D NUM_DATE1       S              6P 0 INZ(210991)
+     D NUM_DATE2       S              7P 0
+     D CHAR_DATE       S              8    INZ('02/01/53')
+     D CHAR_LONGJUL    S              8A   INZ('2039/166')
+     D DATE_USA        S               D   DATFMT(*USA)
+      * Move between Date fields. DATE_EUR will contain 24.03.1992
+      *
+     C                   MOVE      DATE_YMD      DATE_EUR
+      *
+      * Convert numeric value in ddmmyy format into a *ISO Date.
+      * DATE_ISO will contain 1991-09-21 after each of the 2 moves.
+     C     *DMY          MOVE      210991        DATE_ISO
+     C     *DMY          MOVE      NUM_DATE1     DATE_ISO
+      *
+      * Move a character value representing a *MDY date to a *JISDate.
+      * DATE_JISwill contain 1953-02-01 after each of the 2 moves.
+     C     *MDY/         MOVE      '02/01/53'    DATE_JIS
+     C     *MDY/         MOVE      CHAR_DATE     DATE_JIS
+      *
+      * Move a date field to a character field, using the
+      * date format and separators based on the job attributes
+     C     *JOBRUN       MOVE (P)  DATE_JIS      CHAR_DATE
+      *
+      * Move a date field to a numeric field, using the
+      * date format based on the job attributes
+      *
+      * Note: If the job format happens to be *JUL, the date will
+      * be placed in the rightmost 5 digits of NUM_DATE1.
+      * The MOVEL operation might be a better choice.
+      *
+     C     *JOBRUN       MOVE (P)  DATE_JIS      NUM_DATE1
+      * DATE_USA will contain 12-31-9999
+     C                   MOVE      *HIVAL        DATE_USA
+      *
+      * Move a *EUR date field to a numeric field that will
+      * represent a *CMDY date. NUM_DATE2 will contain 2082697
+      * after the move.
+     C     *CMDY         MOVE      DATE_EUR      NUM_DATE2
+      *
+      * Move a character value representing a *LONGJUL date to
+      * a *YMD date. DATE_YMD will be 39/06/15 after the move.
+     C     *LONGJUL      MOVE      CHAR_LONGJUL  DATE_YMD
+      *
+      * Execution error, resulting in error code 114. Year is not in
+      * 1940-2039 date range. DATE_YMD will be unchanged.
+     C                   MOVE      DATE_USA      DATE_YMD
+     C                   EVAL      *INLR = *ON

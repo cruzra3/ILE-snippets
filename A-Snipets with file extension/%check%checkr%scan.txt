@@ -1,0 +1,13 @@
+    D String1     S      10      Inz('  NM  QP  ')
+    D String2     S      10      Inz('Bubble    ')
+    D Answer      S       2   0
+
+     /free
+      // Find first non-blank in String1
+      Answer = %check(' ':String1); // Answer = 3
+      // Find last non-blank, checking right to left
+      Answer = %checkr(' ':String2); // Answer = 6
+
+      // Look in String2 for 'ble'
+      Answer = %scan('ble':String2); // Answer = 4
+     /end-free

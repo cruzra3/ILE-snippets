@@ -1,0 +1,18 @@
+      *
+      * FLDA is a 7-position character field.
+      * FLDB is a 5-digit field with 2 decimal positions.
+     d FldA            s              7
+     d FldB            s              5  2
+     D                 DS
+     D Fld1
+     D Fld2            S              7P 2
+      *
+      * Fld1 will be defined as zoned because it is a subfield of a
+      * data structure and numeric subfields default to zoned format.
+      *
+     C     *LIKE         DEFINE    Fld2          Fld1
+      *
+      * Fld3 will be defined as packed because it is a standalone field
+      * and all numeric items except subfields default to packed format.
+     C     *LIKE         DEFINE    Fld1          Fld3
+     C                   Eval      *InLr = *On

@@ -1,0 +1,8 @@
+     D string          S             50A   inz('The java llama is not your')
+     D pos             S              3  0
+      *
+      /free
+         pos = %scan('java' : string);
+         string = %replace('*' : string : pos : 2);
+      /end-free
+     C                   EVAL      *INLR = *ON

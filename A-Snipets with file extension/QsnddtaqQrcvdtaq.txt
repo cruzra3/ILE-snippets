@@ -1,0 +1,40 @@
+Sending entries to the data queue —
+
+     D SDQ            PR             Extpgm('QSNDDTAQ')
+     D  DQ                   10      Const
+     D  DQLIB                10      Const
+     D  Entlen                5  0   Const
+     D  Entry               100
+      *
+     D Orderdata      s     100
+     D DQ             s      10      Inz('ORDERS')
+     D DQLIB          s      10      Inz('MYLIB')
+      /free
+       CallP SDQ(DQ:DQLIB:%len(Orderdata):Orderdata);
+       ...
+
+
+Receiving entries from the data queue —
+
+     D RDQ            PR             Extpgm('QRCVDTAQ')
+     D  DQ                   10      Const
+     D  DQLIB                10      Const
+     D  Entlen                5  0   Const
+     D  Entry               100
+     D  Waittime              5  0
+      *
+     D Orderdata      s     100
+     D DQ             s      10      Inz('ORDERS')
+     D DQLIB          s      10      Inz('MYLIB')
+     D Waittime       s       5  0   Inz(-1)
+
+      /free
+       CallP RDQ(DQ:DQLIB:%len(Orderdata):
+                 Orderdata:Waittime);
+       // The wait time parameter has the following
+       // meaning. A negative number means wait
+       // indefinitely; otherwise, the value is the amount
+       // of seconds to wait for an entry to arrive on the
+       // queue. Control will return to the program with or
+       // without an entry.
+       ...

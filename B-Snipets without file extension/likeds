@@ -1,0 +1,13 @@
+     Dcustomer         ds
+     D name                          25
+     D address                       25
+     D city                          25
+     D postalcode                    10
+     D origdate                        d   inz(*sys)
+     D vendor          ds                  likeds(customer) inz
+      /free
+         if vendor.origdate = *loval;
+         dsply 'true';
+         endif;
+      /end-free
+     C                   EVAL      *INLR = *ON

@@ -1,0 +1,9 @@
+     /free
+      Read File_A;                // Initial Read
+      Dow not %eof(File_A);       // Test here
+
+        // Process record here when Dow test is true
+
+        Read File_A;              // Subsequent Reads
+      Enddo;                      // Go back to the Dow
+      // Control comes here when the test at Dow is false

@@ -1,0 +1,45 @@
+     D FLDA            s              2  0 INZ(5)
+     D FLDB            s              2  0 INZ(5)
+     D FLDC            s              2  0 INZ(0)
+      *
+      * The DOWLT operation allows the operation within the DO group
+      * to be processed only if FLDA is less than FLDB. If FLDA is
+      * not less than FLDB, the program branches to the operation
+      * immediately following the ENDDO operation. If FLDA is less
+      * than FLDB, the operation within the DO group is processed.
+     C
+     C     FLDA          DOWLT     FLDB
+     C
+      *
+      * The ENDDO operation causes the program to branch to the first
+      * DOWLT operation where a test is made to determine whether FLDA
+      * is less than FLDB. This loop continues processing until FLDA
+      * is equal to or greater than FLDB; then the program branches
+      * to the operation immediately following the ENDDO operation.
+     C
+     C                   MULT      2.08          FLDA
+     C                   ENDDO
+     C
+      * In this example, multiple conditions are tested. The combined
+      * DOWLT ORLT operation allows the operation within the DO group
+      * to be processed only while FLDA is less than FLDB or FLDC. If
+      * neither specified condition exists, the program branches to
+      * the operation immediately following the ENDDO operation. If
+      * either of the specified conditions exists, the operation after
+      * the ORLT operation is processed.
+     C
+     C                   EVAL      FLDA = 4
+     C                   EVAL      FLDB = 5
+     C                   EVAL      FLDC = 5
+     C     FLDA          DOWLT     FLDB
+     C     FLDA          ORLT      FLDC
+     C
+      * The ENDDO operation causes the program to branch to the second
+      * DOWLT operation where a test determines whether specified
+      * conditions exist. This loop continues until FLDA is equal to
+      * or greater than FLDB and FLDC; then the program branches to the
+      * operation immediately following the ENDDO operation.
+     C
+     C                   MULT      2.08          FLDA
+     C                   ENDDO
+     C                   EVAL      *INLR = *ON

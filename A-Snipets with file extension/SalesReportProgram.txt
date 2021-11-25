@@ -1,0 +1,152 @@
+      *____________________________
+      * Program name: SalesRpt1
+      *
+      * Purpose:      Print detail sales and totals for each salesperson
+      *               by year, state, and month.
+      *
+      *________________________________
+      * Define the files to be used
+      *
+     FCustSlsl1 IF   E           K DISK
+     FSalesRpt1 O    E             PRINTER OFLIND(Overflow)
+     D Overflow        s               n
+      *_______________________________
+      * Main Procedure
+      *_______________________________
+      /free
+
+       Read CustSlsl1;
+
+       If not %eof(CustSlsl1);
+
+         SavePerson = SLperson;
+         Write Headings;
+
+      Endif;
+
+      SaveState = SlState;
+      SaveYear  = Sliyy;
+      SaveMonth = Slimm;
+
+      Dow not %eof(CustSlsl1);  // Do while not at eof
+
+        If SlPerson <> Saveperson;
+          Exsr Check_Overflow;
+          Exsr Month_break;
+
+          Exsr Check_Overflow;
+          Exsr State_break;
+
+          Exsr Check_Overflow;
+          Exsr Year_break;
+
+          Exsr Check_Overflow;
+          Exsr Person_break;
+          Write Headings;
+        Endif;
+
+        If SliYY <> SaveYear;
+          Exsr Check_Overflow;
+          Exsr Month_break;
+
+          Exsr Check_Overflow;
+          Exsr State_break;
+
+          Exsr Check_Overflow;
+          Exsr Year_break;
+        Endif;
+
+        If SlState <> SaveState;
+          Exsr Check_Overflow;
+          Exsr Month_break;
+
+          Exsr Check_Overflow;
+          Exsr State_break;
+        Endif;
+
+        If SliMM <> SaveMonth;
+          Exsr Check_Overflow;
+          Exsr Month_break;
+        Endif;
+
+        Exsr Check_Overflow;
+        Write DETAIL;        // Print customer detail
+
+        Exsr AccumDet;
+
+        Read CustSlsl1;      // Read next record in the file
+
+        Enddo;
+
+        Exsr Month_Break;
+        Exsr State_Break;
+        Exsr Year_Break;
+        Exsr Person_Break;
+
+        *Inlr = *On;           // End program
+
+        //_______________________________
+        Begsr AccumDet;
+
+        TL1iamt += Sliamt;
+        TL1oamt += Sloamt;
+
+        Endsr;
+        //_______________________________
+        Begsr Month_Break;
+
+        TL2iamt += Tl1iamt;
+        TL2oamt += Tl1oamt;
+
+        Write TotMon;
+
+        Clear Tl1iamt;
+        Clear Tl1oamt;
+        SaveMonth = Slimm;
+        Endsr;
+        //_______________________________
+        Begsr State_Break;
+
+        TL3iamt += Tl2iamt;
+        TL3oamt += Tl2oamt;
+
+        Write TotState;
+
+        Clear Tl2iamt;
+        Clear Tl2oamt;
+        SaveState = SlState;
+
+        Endsr;
+        //______________________________
+        Begsr Year_Break;
+
+        TL4iamt += Tl3iamt;
+        TL4oamt += Tl3oamt;
+
+        Write TotYear;
+
+        Clear Tl3iamt;
+        Clear Tl3oamt;
+        SaveYear = SliYY;
+
+        Endsr;
+        //______________________________
+        Begsr Person_break;
+
+        Write TotPerson;
+
+        Clear Tl4iamt;
+        Clear Tl4oamt;
+
+        Saveperson = Slperson;
+        Endsr;
+        //______________________________
+        Begsr Check_Overflow;
+
+          If Overflow;         // Check for and handle overflow
+          // If true, print headings and reset overflow indicator
+            Write Headings;
+            Reset Overflow;
+          Endif;
+        Endsr;
+       /end-free

@@ -1,0 +1,11 @@
+     /free
+      Dou %eof(File_A);           // Set up for test only
+        Read File_A;              // Get record here
+        If not %eof(File_A);      // Check for end-of-file
+
+          // If not end-of-file, process record here
+
+        Endif;
+      Enddo;        // Test here. If false, go back to Dou
+      // Control comes here when the test at Enddo is true
+     /end-free

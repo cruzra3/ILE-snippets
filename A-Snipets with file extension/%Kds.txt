@@ -1,0 +1,30 @@
+Data file DDS for FileA:
+     A          R RecA
+     A            Field1           20A
+     A            Field2            9S 2
+     A            Field3           30A
+     A          K Field1
+     A          K Field2
+
+RPG IV program:
+     FFileA    if   e                  k  disk
+
+     D KeyRec          ds                         LikeRec(RecA:*key)
+     D*          KeyRec is a qualified data structure
+
+      /free
+       // First, load the key search arguments
+       KeyRec.Field1 = data1;
+       KeyRec.Field2 = data2;
+       // Now we can use the data structure as the key search argument
+
+       Chain %kds(KeyRec) FileA;
+      /end-free
+
+Now, the in-line way —
+
+      /free
+       // Just use the runtime data variables
+       Chain (Data1:Data2) FileA;
+      /end-free
+

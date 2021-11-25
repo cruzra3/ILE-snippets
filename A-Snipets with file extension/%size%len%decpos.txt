@@ -1,0 +1,15 @@
+    D Ary         S       8      Dim(1000) Based(Ptr)
+    D Char2       S      10      Inz('-78 33 5 1')
+    D Answer      S       9   2
+    D   lenA      C              %len(Answer)
+    D   dposA     C              %decpos(Answer)
+
+     /free
+      // Allocate dynamic storage space for 100 elements
+      Ptr = %alloc(%size(Ary) * 100);
+
+      // From Listing 5-4, converting Char2 and adjusting
+      // the precision to match the Answer field
+      Answer = %dec(Char2:lenA:0)/10**dposA;
+      // Answer now = 7833.51-
+     /end-free

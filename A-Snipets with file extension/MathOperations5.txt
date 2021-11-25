@@ -1,0 +1,31 @@
+Fixed-format Eval with a long expression:
+     C              Eval     New_Amount = ((FieldA +
+     C                       FieldB) * FieldC)
+     C                       / (FieldD + FieldE)
+
+Equivalent in free format, making better use of space:
+      /free
+       New_Amount =((FieldA+FieldB)*FieldC/(FieldD+FieldE);
+      /end-free
+
+
+"If" logic in fixed format:
+     C              If      Month = June and Moon = Full
+     C              If      Amount_due > *zero
+     C              Eval    Special_discount = .13
+     C              Else
+     C              Eval    Special_discount = .07
+     C              Endif
+     C              Endif
+
+Equivalent in free format:
+      /free
+       If Month = June and Moon = Full;
+         If Amount_due > *zero;
+           Special_discount = .13;
+         Else;
+           Special_discount = .07;
+         Endif;
+       Endif;
+      /end-free
+

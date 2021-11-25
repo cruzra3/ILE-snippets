@@ -1,0 +1,18 @@
+    D Char1       S       8      Inz('1342.77')
+    D Char2       S      10      Inz('-78 33 5 1')
+    D Answer      S       9   2
+    D  lenA       C              %len(Answer)
+    D  dposA      C              %decpos(Answer)
+
+     /free
+      // Convert Char1 to decimal using %dec
+      Answer = %dec(Char1:9:2); // Answer = 1342.77
+
+      // Convert Char2 to decimal using %dec
+      Answer = %dec(Char2:9:2); // Answer = 783351.00-
+
+      // To shift the decimal point, increase the length
+      // of the return value, then divide by a power of 10
+      Answer = %dec(Char2:lenA:0)/10**dposA;
+      // Answer now = 7833.51-
+     /end-free

@@ -1,0 +1,25 @@
+     A*%%TS  SD  20080422  082945  CRUZRA3     REL-V5R3M0  5722-WDS
+     A*%%EC
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      REF(*LIBL/CUSTMAST)
+     A                                      PRINT
+     A                                      CA03(03 'End')
+     A*-------------------------------------------------------------------------
+     A          R FMT
+     A*%%TS  SD  20080422  074040  CRUZRA3     REL-V5R3M0  5722-WDS
+     A                                      INDTXT(41 'Inquiry/Maintenance swit-
+     A                                      ch')
+     A                                      BLINK
+     A                                      KEEP
+     A N41                              1 33'Update Customer'
+     A                                      DSPATR(HI)
+     A                                  3  2'Type customer number, press a func-
+     A                                      tion key.'
+     A                                      COLOR(BLU)
+      *
+     A            MSGDTA         7A  P
+     A                                  6 11'Customer Number:'
+     A            CUSNBR    R        B  6 34REFFLD(CUST#)
+     A  71                                  ERRMSGID(USR0001 USERMSG 71 &MSGDTA)
+     A                                 23  2'F3=Exit'
+     A                                      COLOR(BLU)

@@ -1,0 +1,24 @@
+     D* Named indicators
+     D First_Time             S                 n
+     D Invalid_Cust           S                 n
+
+
+DDS in a display file named DSPFile:
+     A                                               INDARA
+     A                                               CA03(03)
+      * Record information...
+
+RPG program:
+     FDSPFile    CF  E                WORKSTN        INDDS(Inds)
+
+     D Inds             Ds
+     D  Exit                      n             Overlay(Inds:3)
+     D  Cancel                    n             Overlay(Inds:12)
+     D  SflDsp                    n             Overlay(Inds:30)
+      *  Other display file indicators
+      /free
+       If not exit;      // Using the display file indicator 03 as a name
+         Sfldsp = *on;   //  Setting a display file indicator
+         // More program content here
+       Endif;
+      /end-free

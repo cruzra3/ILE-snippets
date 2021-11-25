@@ -1,0 +1,13 @@
+    D CMoney      S      10      Inz('$1,342.77')
+    D Char_out    C       2      '$,'
+    D Answer      S       9   2
+
+     /free
+      // Combine %xlate and %dec to get data conversion
+      Answer = %dec(%xlate(Char_out:'  ':CMoney):9:2);
+
+      // The %xlate function removes the $ and , leaving
+      // just the numbers and the period. The %dec
+      // function converts this result to decimal.
+      // Answer now = 1342.77
+     /end-free

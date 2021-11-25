@@ -1,0 +1,38 @@
+      *
+      * The field values are:
+      * FieldA = 100.00
+      * FieldB = 105.00
+      * FieldC = ABC
+      * FieldD = ABCDE
+
+     D FieldA          S              5S 2 INZ(100.00)
+     D FieldB          S              5S 2 INZ(105.00)
+     D FieldC          S              3A   INZ('ABC')
+     D FieldD          S              5A   INZ('ABCDE')
+      *
+      * Branch to TAGX.
+     C     FieldA        CABLT     FieldB        TAGX
+      *
+      *
+     C     FieldA        CABLE     FieldB        TAGX
+      *
+      * Branch to TAGX; indicator 16 is off.
+     C     FieldA        CABLE     FieldB        TAGX                     16
+      *
+      * Branch to TAGX; indicator 17 is off, indicator 18 is on.
+     C     FieldA        CAB       FieldB        TAGX                 1718
+      *
+      * Branch to TAGX; indicator 19 is on.
+     C     FieldA        CAB       FieldA        TAGX                     19
+      *
+      * No branch occurs.
+     C     FieldA        CABEQ     FieldB        TAGX
+      *
+      * No branch occurs; indicator 20 is on.
+     C     FieldA        CABEQ     FieldB        TAGX                   20
+      *
+      * No branch occurs; indicator 21 is off.
+     C     FieldC        CABEQ     FieldD        TAGX                 21
+
+     C     TAGX          TAG
+     C                   EVAL      *INLR = *ON

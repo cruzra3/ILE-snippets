@@ -1,0 +1,28 @@
+      *
+      * Define a Multiple Occurrence data structure of 20 elements with:
+      * -- 3 fields of character 20
+      * -- A 4th field of character 10 which overlaps the 2nd
+      * field starting at the second position.
+      *
+      * Named constant 'Max_Occur' is used to define the number of
+      * occurrences.
+      *
+      * Absolute notation (using begin/end positions)
+      *
+     D Max_Occur       C                   CONST(20)
+     D twenty          C                   CONST(20)
+     D
+     DDataStruct       DS                  OCCURS (Max_Occur)
+     D field1                  1     20
+     D field2                 21     40
+     D field21                22     31
+     D field3                 41     60
+      *
+      * Mixture of absolute and length notation
+      *
+     D DataStruct2     DS                  OCCURS(twenty)
+     D field1x                       20
+     D field2x                       20
+     D field21x               22     31
+     D field3x                41     60
+     C                   Eval      *InLr = *On

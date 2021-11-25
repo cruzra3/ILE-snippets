@@ -1,0 +1,26 @@
+    D Mixed_Num   S       7   2  Inz(4387.77)
+    D Char_Num    S      10      Inz('-7795.68')
+    D Answer      S      10   0
+
+     /free
+      // Using %int to get the whole-number part
+      Answer = %int(Mixed_Num); // Answer = 4387
+
+      // Using %inth to half adjust
+      Answer = %inth(Mixed_Num); // Answer = 4388
+
+      // Usint %int to convert character to integer
+      Answer = %int(Char_Num); // Answer = 7795-
+
+      // Using %inth to half adjust
+      Answer = %inth(Char_Num); // Answer = 7796-
+
+      // Using %uns to retrieve the whole number
+      Answer = %uns(Mixed_Num); // Answer = 4387
+
+      // Using %unsh to half adjust
+      Answer = %unsh(Mixed_Num); // Answer = 4388
+
+      // The %uns or %unsh function can't be used with
+      // Char_Num because it is a negative number
+     /end-free

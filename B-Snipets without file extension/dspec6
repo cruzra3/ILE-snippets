@@ -1,0 +1,5 @@
+      * -- Subfields that are not renamed are prefixed with the
+      * prefix string
+     D extds1        E DS                  EXTNAME(PSPOH)
+     D                                     PREFIX (CU_)
+     C                   Eval      *InLr = *On

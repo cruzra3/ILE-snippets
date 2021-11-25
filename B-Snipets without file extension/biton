@@ -1,0 +1,130 @@
+     d msgA            c                   'FieldA value is '
+     d msgB            c                   'FieldB value is '
+     d msgC            c                   'FieldC value is '
+     d msgD            c                   'FieldD value is '
+     d msgF            c                   'FieldF value is '
+     d msgH            c                   'FieldH value is '
+     d msgJ            c                   'FieldJ value is '
+     d msg2            s             18
+     d Fld             s              1
+     d rslt            s              1
+     d Sel             s             10
+
+     D FieldA          S              1A   INZ(X'00')
+     D FieldB          S              1A   INZ(X'00')
+     D FieldC          S              1A   INZ(X'FF')
+     D FieldD          S              1A   INZ(X'C0')
+     D FieldE          S              1A   INZ(X'C0')
+     D FieldF          S              1A   INZ(X'81')
+     D FieldG          S              1A   INZ(X'4F')
+     D FieldH          S              1A   INZ(X'08')
+     D FieldI          S              1A   INZ(X'CE')
+     D FieldJ          S              1A   INZ(X'80')
+     D FieldK          S              1A   INZ(X'80')
+     D BITNC           C                   CONST('0246')
+     D HEXNC           C                   CONST(X'0F')
+     D HEXNC2          C                   CONST(X'F0')
+      * Set on bits 0,4,5,6,7 in FieldA. Leave bits 1,2,3 unchanged.
+      * Factor 2 = 10001111
+      * FieldA = 00000000 (before)
+      * FieldA = 10001111 (after)
+     C                   BITON     '04567'       FieldA
+
+     C                   Eval      Sel = 'FieldA'
+     C                   Eval      Fld = FieldA
+     C                   ExSr      ShowMe
+      * Set on bit 3 in FieldB. Leave bits 0,1,2,4,5,6,7 unchanged.
+      * Factor 2 = 00010000
+      * FieldB = 00000000 (before)
+      * FieldB = 00010000 (after)
+     C                   BITON     '3'           FieldB
+
+     C                   Eval      Sel = 'FieldB'
+     C                   Eval      Fld = FieldB
+     C                   ExSr      ShowMe
+      * Set on bit 3 in FieldC. Leave bits 0,1,2,4,5,6,7 unchanged.
+      * Setting on bit 3, which is already on, results in bit 3 remaining on.
+      * Factor 2 = 00010000
+      * FieldC = 11111111 (before)
+      * FieldC = 11111111 (after)
+     C                   BITON     '3'           FieldC
+
+     C                   Eval      Sel = 'FieldC'
+     C                   Eval      Fld = FieldC
+     C                   ExSr      ShowMe
+      * Set on bit 3 in FieldD. Leave bits 0,1,2,4,5,6,7 unchanged.
+      * Factor 2 = 00010000
+      * FieldD = 11000000 (before)
+      * FieldD = 11010000 (after)
+     C                   BITON     '3'           FieldD
+
+     C                   Eval      Sel = 'FieldD'
+     C                   Eval      Fld = FieldD
+     C                   ExSr      ShowMe
+      * Set on bits 0 and 1 in FieldF. Leave bits 2,3,4,5,6,7 unchanged.
+      * (Setting on bit 0, which is already on, results in bit 0 remaining
+      * on.)
+      * Factor 2 = 11000000
+      * FieldF = 10000001 (before)
+      * FieldF = 11000001 (after)
+     C                   BITON     FieldE        FieldF
+
+     C                   Eval      Sel = 'FieldF'
+     C                   Eval      Fld = FieldF
+     C                   ExSr      ShowMe
+      * X'C1' is equivalent to literal '017', bit pattern 11000001.
+      * Set on bits 0,1,7 in FieldH. Leave bits 2,3,4,5,6 unchanged.
+      * Factor 2 = 11000001
+      * FieldH = 00001000 (before)
+      * FieldH = 11001001 (after)
+     C                   BITON     X'C1'         FieldH
+
+     C                   Eval      Sel = 'FieldH'
+     C                   Eval      Fld = FieldH
+     C                   ExSr      ShowMe
+      * HEXNC is equivalent to literal '4567', bit pattern 00001111.
+      * Set on bits 4,5,6,7 in FieldJ. Leave bits 0,1,2,3 unchanged.
+      * Factor 2 = 00001111
+      * FieldJ = 10000000 (before)
+      * FieldJ = 10001111 (after)
+     C                   BITON     HEXNC         FieldJ
+     C                   EVAL      *INLR = *ON
+
+     C                   Eval      Sel = 'FieldJ'
+     C                   Eval      Fld = FieldJ
+     C                   ExSr      ShowMe
+      *-------------------------------------------------------------------------
+     C     ShowMe        BegSr
+      *-------------------------------------------------------------------------
+      /free
+             Select;
+         When Sel = 'FieldA';
+             Msg2 = MsgA + Fld;
+             dsply Msg2  ' ' rslt;
+
+         When Sel = 'FieldB';
+             Msg2 = MsgB + Fld;
+             dsply Msg2  ' ' rslt;
+
+         When Sel = 'FieldC';
+             Msg2 = MsgC + Fld;
+             dsply Msg2  ' ' rslt;
+
+         When Sel = 'FieldD';
+             Msg2 = MsgD + Fld;
+             dsply Msg2  ' ' rslt;
+
+         When Sel = 'FieldF';
+             Msg2 = MsgF + Fld;
+             dsply Msg2  ' ' rslt;
+
+         When Sel = 'FieldH';
+             Msg2 = MsgH + Fld;
+             dsply Msg2  ' ' rslt;
+
+         When Sel = 'FieldJ';
+             Msg2 = MsgJ + Fld;
+             dsply Msg2  ' ' rslt;
+             EndSl;
+      /end-free
+     C                   EndSr

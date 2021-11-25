@@ -1,0 +1,17 @@
+    D Field7     S          7       Inz('ABCDEFG')
+    D Field3     S          3       Inz('QRZ')
+    D Answer     S          5       Inz(*blanks)
+
+     /free
+      // Longer field to shorter field
+      Answer = Field7;  // Answer = 'ABCDE'
+
+      // Shorter field to longer field
+      Answer = Field3;  // Answer = 'QRZ  '
+
+      // Longer field to shorter field – EvalR
+      EvalR Answer = Field7;  // Answer = 'CDEFG'
+
+      // Shorter field to longer field using EvalR
+      EvalR Answer = Field3;  // Answer = '  QRZ'
+     /end-free

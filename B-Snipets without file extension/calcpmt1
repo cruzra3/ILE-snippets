@@ -1,0 +1,18 @@
+     DCalcPmt2         PR            15P 2
+     D                               15P 2 Value
+     D                                7P 7 Value
+     D                                7P 0 Value
+
+     DAnnIntrest       S              7P 7
+     DLoanAmount       S             15P 2
+     DMonthlyPmt       S             15P 2
+     DTermMonths       S              7P 0
+
+     C                   Eval      AnnIntrest = .08
+     C                   Eval      LoanAmount = 133900.00
+     C                   Eval      TermMonths = 360
+
+      /free
+         Eval MonthlyPmt = CalcPmt2(LoanAmount:AnnIntrest:TermMonths);
+      /end-free
+     C                   Eval      *Inlr = *On

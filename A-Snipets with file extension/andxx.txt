@@ -1,0 +1,30 @@
+     d msg1            c                   'Acrec value is '
+     d msg2            s             18
+     d rslt            s              1
+     d Acrec           s              1
+     d Acode           s              1    Inz('A')
+      * If ACODE is equal to A and indicator 50 is on, the MOVE
+      * and Dsply operations are processed.
+     C                   Eval      *In50 = *On
+     C     ACODE         IFEQ      'A'
+     C     *IN50         ANDEQ     *ON
+     C                   MOVE      'A'           ACREC
+     C     Msg1          Cat       Acrec         Msg2
+      /free
+         dsply Msg2  ' ' rslt;
+      /end-free
+     C***                WRITE     RCRSN
+      * If the previous conditions were not met but ACODE is equal
+      * to A, indicator 50 is off, and ACREC is equal to D, the
+      * following MOVE operation is processed.
+     C                   ELSE
+     C     ACODE         IFEQ      'A'
+     C     *IN50         ANDEQ     *OFF
+     C     ACREC         ANDEQ     'D'
+     C                   MOVE      'A'           ACREC
+      /free
+         dsply Acrec ' ' rslt;
+      /end-free
+     C                   ENDIF
+     C                   ENDIF
+     C                   Eval      *InLr = *On

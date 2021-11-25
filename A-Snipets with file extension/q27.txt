@@ -1,0 +1,16 @@
+     D AreaCode        S              3  0 Inz(  3)
+     D PhPrefix        S              3  0 Inz(  6)
+     D PhNbr           S              4  0 Inz(7890)
+     D Phone#          S             10A
+      /free
+       Eval Phone# = %Char(AreaCode) + %Char(PhPrefix) +
+                     %Char(PhNbr);
+       Clear Phone#;
+        // Eval Phone# = %Editw(AreaCode:'0') + %Editw(PhPrefix:'0') +
+        //           %Editw(PhNbr:'0');
+       Eval Phone# = %Editc(AreaCode:'X') + %Editc(PhPrefix:'X') +
+                     %Editc(PhNbr:'X');
+        // Eval Phone# = %Char(AreaCode:'0') + %Char(PhPrefix:'0') +
+        //           %Char(PhNbr:'0');
+       *Inlr = *On;
+      /end-free

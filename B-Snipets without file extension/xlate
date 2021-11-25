@@ -1,0 +1,7 @@
+      *
+      * The following translates the blank in NUMBER to '-'. The result
+      * in RESULT will be '999-9999'.
+      *
+     C                   MOVE      '999 9999'    Number            8
+     C     ' ':'-'       XLATE     Number        Result            8
+     C                   EVAL      *INLR = *ON

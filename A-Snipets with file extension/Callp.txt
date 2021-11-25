@@ -1,0 +1,35 @@
+    D Check_Date         PR              Extpgm('DATCHK')
+    D  date                       8  0
+    D  flag                        n
+     *
+    D Yes_or_No          s         n
+
+     /free
+      CallP Check_Date(ScreenDate:Yes_or_No);
+
+      // The program DATCHK is called dynamically with two
+      // parameters: ScreenDate and Yes_or_No. The
+      // parameters in the prototype don't need to be
+      // named, but some type of documentation would be
+      // helpful.
+
+     /end-free
+	 
+	 D Check_Date         PR
+     D  date                       8  0
+     D  Yes_No                      n
+     D Check_Date         PI
+     D  Date8                      8  0
+     D  Yes_No                      n
+      *
+     D Today              s         d
+
+      /free
+       Today = %date();       // Set today's date
+       If %diff(Today:%date(Date8:*mdy:*days)) > 60;
+         Yes_No =*On;         // Parm date > 60 days ago
+       Else;
+         Yes_No = *Off;       // Parm date not more than
+                              // 60 days ago
+       Endif;
+      /end-free

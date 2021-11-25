@@ -1,0 +1,23 @@
+    D Num1       S                 5  2  Inz(93.45)
+    D Num2       S                 7  2  Inz(13754.76)
+    D Answer     S                11  2
+
+     /free
+      // Addition
+      Answer = Num1 + Num2;
+
+      // Subtraction
+      Answer = Num2 – Num1;
+
+      // Multiplication (no half adjust)
+      Answer = Num1 * Num2;
+
+      // Multiplication with half adjust
+      Eval(h) Answer = Num1 * Num2;
+
+      // Division (no half adjust)
+      Answer = Num2 / Num1;
+
+      // Division with half adjust
+      Eval(h) Answer = Num2 / Num1;
+     /end-free

@@ -1,0 +1,14 @@
+      /free
+      If Action = 'A';
+        Write Record_a;
+        Message = 'Record added';
+      Elseif Action = 'C';
+        Update Record_a;
+        Message = 'Record updated';
+      Elseif Action = 'D';
+        Delete Record_a;
+        Message = 'Record deleted';
+      Else;
+        Message = 'Invalid Action code entered.';
+      Endif;
+     /end-free

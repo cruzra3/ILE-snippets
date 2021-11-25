@@ -1,0 +1,23 @@
+     H DATFMT(*ISO)
+     D date_USA        S               D   DATFMT(*USA)
+     D datefld         S               D
+     D timefld         S               T   INZ(T'14.23.10')
+     D chr_dateA       S              6    INZ('041596')
+     D chr_dateB       S              7    INZ('0610807')
+     D chr_time        S              6
+      * Move a character value representing a *MDY date to a D(Date) value.
+      * *MDY0 indicates that the character date in Factor 2 does not
+      * contain separators.
+      * datefld will contain 1996-04-15 after the move.
+     C     *MDY0         MOVE      chr_dateA     datefld
+      * Move a field containing a T(Time) value to a character value in the
+      * *EUR format. *EUR0 indicates that the result field should not
+      * contain separators.
+      * chr_time will contain '142310' after the move.
+     C     *EUR0         MOVE      timefld       chr_time
+      * Move a character value representing a *CYMD date to a *USA
+      * Date. Date_USA will contain 08/07/1961 after the move.
+      * 0 in *CYMD indicates that the character value does not
+      * contain separators.
+     C     *CYMD0        MOVE      chr_dateB     date_USA
+     C                   MOVE      *On           *inlr

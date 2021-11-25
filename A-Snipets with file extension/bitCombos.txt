@@ -1,0 +1,19 @@
+    D Date6       S       6   0     Inz(020405)
+    D LongJul7    S       7   0
+    D Answer      S       9   2
+
+     /free
+      // Use built-in functions to convert a 6-digit date
+      // to its long Julian equivalent. Century break
+      // at year 40.
+
+      LongJul7 = %dec(%date(Date6:*MDY):*LongJul);
+      // This code requires V5R2 or later.
+
+      // In V5R3, the line can be shortened because %dec
+      // can convert a date data type; then it would be:
+
+      LongJul7 = %dec(%date6:*MDY):*LongJul);
+
+      // LongJul7 = 2005035
+     /end-free

@@ -1,0 +1,5 @@
+     D Search          S        1        Inz'i'
+     D New             S        1        Inz'a'
+     D Char_string     S       30        Inz'Mississippi'
+      /free
+       Char_String = %xlate(Search:New:Char_String);

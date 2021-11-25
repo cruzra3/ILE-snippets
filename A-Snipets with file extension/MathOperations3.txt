@@ -1,0 +1,16 @@
+     /free
+      // Simple power and roots:
+      Area_Circle = 3.1416 * Radius ** 2;
+      //   The expression above computes the area of a
+      //   circle using the power 2.
+
+      Cube_Root = 8 ** (1/3);
+      //   The expression above computes the cube root of
+      //   8, making Cube_Root = 2.
+
+      Future_Val_Annuity = Period_Amt * (((1+i)**n-1)/i);
+      //   The expression above computes the future value
+      //   of an annuity. i is the periodic rate, and n
+      //   is the number of periods.
+
+     /end-free

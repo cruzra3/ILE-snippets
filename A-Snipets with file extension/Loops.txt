@@ -1,0 +1,37 @@
+       *
+	   * Controlled looping examples
+	   *
+     /free
+      For i = 1 to 20;               // Loop setup - perform 20 times
+        If NewArray(i) = *zero;      // Using the loop index i
+          NewArray(i) = OldArray(i);
+        Endif;
+      Endfor;
+
+      For i = %len(LName) downto 3;  // High to low loop
+        If %subst(LName:i-2:3) = 'Jr.';     // Using the index in a
+                                            // substring
+          Suffix = 'Junior';
+          Leave;                            // Leave the For loop
+        Endif;
+      Endfor;
+
+      Read FileA;
+      Dow not %eof(FileA);                  // Do While loop
+        // Process record...
+        Read FileA;
+      Enddo;
+
+      Dou exit;                            // Do Until loop
+        Exfmt RecA;
+        If not exit;
+          Select;
+            When Exit;
+            When Pagedown;
+              Exsr Loadpage;
+            Other;
+              Exsr Edit;
+          Endsl;
+         Endif;
+      Enddo;
+     /end-free

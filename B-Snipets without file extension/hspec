@@ -1,0 +1,5 @@
+     H ALTSEQ(*EXT) CURSYM('$') DATEDIT(*MDY) DATFMT(*MDY/) DEBUG(*YES)
+     H DECEDIT('.') FORMSALIGN(*YES) FTRANS(*SRC) DFTNAME(name)
+     H TIMFMT(*ISO)
+     H COPYRIGHT('(C) Copyright ABC Programming - 1995')
+     C                   EVAL      *INLR = *ON

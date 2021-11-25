@@ -1,0 +1,13 @@
+     D Array        S          1     Dim (30)
+     D Field        S         30
+     D i            S         20
+      /free
+       For i = 1 to %len(Field);
+         Array(i) = %subst(Field:i:1);
+       Endfor;
+
+To move the array back to the field:
+
+       For i = 1 to %len(Field);
+         %subst(Field:i:1) = Array(i);
+       Endfor;

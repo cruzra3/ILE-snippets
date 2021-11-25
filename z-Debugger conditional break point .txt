@@ -1,0 +1,29 @@
+Undocumented Debugger Function 
+
+Published: August 30, 2006 
+
+Hey, Ted: 
+
+Here's a tip for those readers who, like me, still have to use the full-screen, green-screen debugger. I accidentally discovered that RPG supports a debugging option that is not documented in either the help text or the RPG programmer's guide. 
+
+If you want to break a program or procedure when a variable has a certain value, you can use a conditional breakpoint. In the following example, the program breaks at statement 12 if variable STATE has the value TX. 
+
+break 12 when state = 'TX'
+
+Suppose you want to stop when part of a field contains a certain value? The debugger provides a substring function that can accomplish that task. Here's the command to break if the fourth and fifth characters of ITEMNUMBER are G3. 
+
+break 12 when %substr(ItemNumber 4 2) = 'G3'
+
+You can also use the substring function to look at part of a variable. 
+
+eval %substr(ItemNumber 4 2)
+
+This is especially handy when you only want to see part of a long string. Also, you can change part of a character string. 
+
+eval %substr(itemnumber 7 3) = 'ABC'
+
+It was an accident that I discovered that RPG supports substrings. The CL examples of conditional break points in the help text mention the %SUBSTR function, but the RPG examples do not, so I assumed that RPG did not support substringing. Then one day I forgot that %SUBSTR was only supported for CL and used it for RPG without thinking what I was doing. 
+
+I wonder what other undocumented features the debugger might have. 
+
+--Dominic Lefevre 

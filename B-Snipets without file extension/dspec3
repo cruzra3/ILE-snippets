@@ -1,0 +1,30 @@
+     D* Define a data structure and initialize it to zero and blanks
+     DItemNumber       DS                  INZ
+     D Group                          5
+     D Color                          6
+     D Size                           3  0
+     D Number                        10  0
+
+     D* Define a data structure with splitting subfields
+     D* State is part of CityState field
+     DAddress          DS
+     D street                        15
+     D Number2                       10
+     D CityState                     30
+     D State                  26     45
+
+     D* Define a data structure with array
+     DTotalyear        DS
+     D Total                          7  2
+     D Permonth                       5  2 DIM(12)
+
+     D* Define a data structure with OVERLAY
+     DWorkerDet        DS                  OCCURS(100)
+     D Name                          30
+     D FirstName               1     15
+     D LastName               16     30
+     D Phone_No                      10
+     D Area_Code                      3    OVERLAY(Phone_No)
+     D Local_No                       7    OVERLAY(Phone_No:4)
+     D Status                         1    inz('1')
+     C                   Eval      *InLr = *On

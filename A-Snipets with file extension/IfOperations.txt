@@ -1,0 +1,27 @@
+     /free
+      // Consider the following If expression:
+
+      If  (Acctbal > 1000 or Status = 'A')
+                        and Date_1 > Date_2;
+
+      // Due to the higher precedence of parentheses, the
+      // logic group inside the parentheses will be
+      // resolved first. If either comparison is true, the
+      // group is true. If the group is true, the next
+      // part of the expression is checked. If this
+      // expression is also true, the If resolves to true.
+
+      // Now consider the same expression without the
+      // parentheses:
+
+      If  Acctbal > 1000 or Status = 'A'
+                       and Date_1 > Date_2;
+
+      // This time, with no parentheses, the "and" has the
+      // highest precedence, so the Status check is now
+      // paired with the date comparison. If Acctbal is
+      // greater than 1000, the entire If is true; if
+      // false, both the Status check and the date
+      // comparison must be true.
+
+     /end-free

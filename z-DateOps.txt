@@ -1,0 +1,11 @@
+/FREE
+ 
+     // Determine the date in 3 years
+     newdate = date + %YEARS(3);
+ 
+     // Determine the date in 6 months prior
+     loandate = duedate - %MONTHS(6);
+ 
+     // Construct a timestamp from a date and time
+     duestamp = duedate + t'12.00.00';
+ /END-FREE

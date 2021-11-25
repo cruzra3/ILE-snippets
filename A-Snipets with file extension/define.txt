@@ -1,0 +1,27 @@
+      *
+      * FLDA is a 7-position character field.
+      * FLDB is a 5-digit field with 2 decimal positions.
+     d FldA            s              7
+     d FldB            s              5  2
+     **
+      * FLDP is a 7-position character field.
+     C     *LIKE         DEFINE    FLDA          FLDP
+      *
+      * FLDQ is a 9-position character field.
+     C     *LIKE         DEFINE    FLDA          FLDQ             +2
+      *
+      * FLDR is a 6-position character field.
+     C     *LIKE         DEFINE    FLDA          FLDR            - 1
+      *
+      * FLDS is a 5-position numeric field with 2 decimal positions.
+     C     *LIKE         DEFINE    FLDB          FLDS
+      *
+      * FLDT is a 6-position numeric field with 2 decimal positions.
+     C     *LIKE         DEFINE    FLDB          FLDT            + 1
+      *
+      * FLDU is a 3-position numeric field with 2 decimal positions.
+     C     *LIKE         DEFINE    FLDB          FLDU            - 2
+      *
+      * FLDX is a 3-position numeric field with 2 decimal positions.
+     C     *LIKE         DEFINE    FLDU          FLDX
+     C                   Eval      *InLr = *On

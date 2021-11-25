@@ -1,0 +1,15 @@
+      *-------------------------------------------------------------------------
+      * Files
+      *-------------------------------------------------------------------------
+      * Company Profile Master
+     FCP001L    IF   E           K DISK    INFDS(SampleDS)
+
+      * Vendor Settlement Detail Print File
+     FCR072S1   O    E             PRINTER INFDS(Prinfo1)
+
+      * Vendor Settlement Summary Print File
+     FCR072S2   O    E             PRINTER INFDS(Prinfo2)
+
+     Fmyfile    if   e             disk    prefix('MY')
+
+     C                   EVAL      *INLR = *ON

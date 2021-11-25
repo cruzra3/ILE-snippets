@@ -1,0 +1,21 @@
+      *
+      * The attributes (length and decimal positions) of
+      * the data area (TOTGRS) must be the same as those for the
+      * external data area.
+     C
+     C     *DTAARA       DEFINE                  TOTGRS           10 2
+     C
+      *
+      * The result field entry (TOTNET) is the name of the data area to
+      * be used within the ILE RPG program. The factor 2 entry (TOTAL)
+      * is the name of the data area as defined to the system.
+     C
+     C     *DTAARA       DEFINE    TOTAL         TOTNET
+     C
+      *
+      * The result field entry (SAVTOT) is the name of the data area to
+      * be used within the ILE RPG program. The factor 2 entry (*LDA)
+      * indicates the use of the local data area.
+     C
+     C     *DTAARA       DEFINE    *LDA          SAVTOT
+     C                   Eval      *InLr = *On

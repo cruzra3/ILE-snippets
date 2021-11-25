@@ -1,0 +1,20 @@
+      *
+      * Because factor 1 is a blank character, CHECKR indicates the
+      * position of the first nonblank character. This use of CHECKR
+      * allows you to determine the length of a string. If STRING
+      * contains 'ABCDEF ', NUM will contain the value 6.
+      * If an error occurs, %ERROR is set to return '1' and
+      * %STATUS is set to return status code 00100.
+      *
+     D String          C                   'ABCDEF '
+     D Num             S              3  0
+     C
+     C     ' '           CHECKR(E) String        Num
+     C
+     C                   SELECT
+     C                   WHEN      %ERROR
+     C* ... an error occurred
+     C                   WHEN      %FOUND
+     C* ... NUM is less than the full length of the string
+     C                   ENDSL
+     C                   EVAL      *INLR = *ON

@@ -1,0 +1,41 @@
+     A*%%TS  SD  20080422  075347  CRUZRA3     REL-V5R3M0  5722-WDS
+     A*%%EC
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      REF(*LIBL/CUSTMAST)
+     A                                      PRINT
+     A                                      CA03(03 'End')
+     A*-------------------------------------------------------------------------
+     A          R ERRMSG
+     A*%%TS  SD  20080422  074040  CRUZRA3     REL-V5R3M0  5722-WDS
+     A                                      INDTXT(41 'Inquiry/Maintenance swit-
+     A                                      ch')
+     A                                      BLINK
+     A                                      KEEP
+     A N41                              1 33'Update Customer'
+     A                                      DSPATR(HI)
+     A                                  3  2'Type customer number, press a func-
+     A                                      tion key.'
+     A                                      COLOR(BLU)
+     A                                  6 11'Customer Number:'
+     A            CUSNBR    R        B  6 34REFFLD(CUST#)
+     A  71                                  ERRMSG('Customer number not on file-
+     A                                      .' 71)
+     A                                 23  2'F3=Exit'
+     A                                      COLOR(BLU)
+     A*         R ERRMSG
+     A          R MSGFLDR
+     A*%%TS  SD  20080422  075347  CRUZRA3     REL-V5R3M0  5722-WDS
+     A                                      INDTXT(41 'Inquiry/Maintenance swit-
+     A                                      ch')
+     A                                      BLINK
+     A                                      KEEP
+     A N41                              1 33'Update Customer'
+     A                                      DSPATR(HI)
+     A                                  3  2'Type customer number, press a func-
+     A                                      tion key.'
+     A                                      COLOR(BLU)
+     A                                  6 11'Customer Number:'
+     A            CUSNBR    R        B  6 34REFFLD(CUST#)
+     A  71        MSGFLD        75   M
+     A                                 23  2'F3=Exit'
+     A                                      COLOR(BLU)

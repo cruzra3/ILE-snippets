@@ -1,0 +1,34 @@
+     FPspohL0   IF   E           K DISK
+
+     DCustNotFound     C                   CONST('CUSTNF')
+     DResult           S              6A
+     DQualified        C                   CONST('0')
+     DCustNotQualifie  C                   CONST('CUSTNQ')
+     DCustOK           C                   CONST('CUSTOK')
+
+     C     Key           Klist
+     C                   Kfld                    OhBncd
+     C                   Kfld                    OhCnnb
+
+     C                   EXSR      CheckCustName
+     C                   Eval      *InLr = *On
+      *
+     C     CheckCustName BEGSR
+     C     Key           CHAIN     Pspohl0
+      *
+      * Check if the name identifies a valid customer
+      *
+     C                   IF        not %found(Pspohl0)
+     C                   EVAL      Result = CustNotFound
+     C                   LEAVESR
+     C                   ENDIF
+      *
+      * Check if the customer qualifies for discount program
+     C                   IF        Qualified = *OFF
+     C                   EVAL      Result = CustNotQualifie
+     C                   LEAVESR
+     C                   ENDIF
+      *
+      * If we get here, customer can use the discount program
+     C                   EVAL      Result = CustOK
+     C                   ENDSR

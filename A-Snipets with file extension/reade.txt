@@ -1,0 +1,22 @@
+     FPspohL0   IF   E           K DISK
+
+     C     Key           Klist
+     C                   Kfld                    Ohbncd
+     C                   Kfld                    Ohcnnb
+      *-------------------------------------------------------------------------
+     C     KEY           READE     PSPOHL0
+     C                   IF        NOT %EOF
+     C                   EXSR      NOT_FOUND
+     C                   ENDIF
+      *-------------------------------------------------------------------------
+      /FREE
+          READE KEY PSPOHL0;
+          IF NOT %EOF;
+             EXSR Not_Found;
+          ENDIF;
+      /END-FREE
+     C                   EVAL      *INLR = *ON
+      *-------------------------------------------------------------------------
+     C     Not_Found     BegSr
+      *-------------------------------------------------------------------------
+     C                   EndSr

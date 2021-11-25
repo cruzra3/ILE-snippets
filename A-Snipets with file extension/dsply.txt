@@ -1,0 +1,13 @@
+     d msg1            c                   'Test Message Enter Y/N'
+     d rslt            s              1
+      /free
+         dsply msg1 ' ' rslt;
+            if rslt = 'y' or rslt = 'Y';
+                else;
+            endif;
+      /end-free
+     c     msg1          dsply                   rslt
+     c     rslt          ifeq      'y'
+     c     rslt          oreq      'Y'
+     c                   endif
+     c                   eval      *inlr = *on

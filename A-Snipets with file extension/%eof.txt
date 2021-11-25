@@ -1,0 +1,15 @@
+     /free
+      Read File_A;           // Read first record
+      Dow not %eof(File_A);  // While not at end-of-file
+          // Process record
+        Read File_A;         // Read next record
+      Enddo;                 
+
+      Setgt *Hival File_B;   // Set file pointer to eof
+      ReadP File_B;          // Read prior – first
+      Dow not %eof(File_B);  // While not at beg-of-file
+        // Process record
+        ReadP File_B;        // Read next prior
+      Enddo;
+      
+      /end-free

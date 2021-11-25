@@ -1,0 +1,22 @@
+                                                                    
+     /* Company:    General Technology Services - GTS */            
+     /* Programmer: R. FERNANDEZ    */                              
+     /* Date:       07/17/2006 */                                   
+     /* Request:    R09070 */                                       
+     /* Function:   LIST ALL PROGRAM AND FILES USED IN   */         
+     /*             LIBRARY: ABPURLIB, ABQGPL, ABMTSLIB  */         
+     /*             ABFINLIB, ABFGSLIB, HRCUST, GLCUST   */         
+                                                                    
+             PGM                                                    
+             DCLF       FILE(SYDEVGEN/ALLPGMLIB)                    
+                                                                    
+ LOOP:       RCVF       RCDFMT(QLIDOBJD)                            
+             MONMSG     MSGID(CPF0864) EXEC(GOTO CMDLBL(END))       
+             DSPPGMREF  PGM(&ODLBNM/&ODOBNM) OUTPUT(*OUTFILE) +     
+                          OBJTYPE(*ALL) OUTFILE(SYDEVGEN/DSPDBR01) +
+                           OUTMBR(*FIRST *ADD)  
+             MONMSG     MSGID(CPF0000)         
+             GOTO       CMDLBL(LOOP)           
+                                               
+ END:                                          
+             ENDPGM                            

@@ -1,0 +1,38 @@
+      * An externally described printer file PrintFile
+     FPrintFile   O   E           Printer   Oflind(Ofl_1)
+     D Ofl_1              s            n
+
+      /free
+       // To print all lines described by record Headings
+       Write Headings;
+
+       // To check for overflow and redo headings
+       If Ofl_1;
+         Write Headings;
+         Clear Ofl_1;
+       Endif;
+
+       // To print a line described by record Detail
+       Write Detail;
+
+      /end-free
+
+* A program-described printer file Qprint
+      FQprint    O   F    120         Printer Oflind(Ofl_2)
+      D Ofl_2            s        n
+
+
+       /free
+        // To print using tag Hdgs on output specs
+        Except Hdgs;
+
+        // To check for overflow and redo headings
+        If Ofl_2;
+          Except Hdgs;
+          Clear Ofl_2;
+        Endif;
+
+        // To print a detail line using tag Detail
+        Except Detail;
+
+      /end-free

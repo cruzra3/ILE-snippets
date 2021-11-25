@@ -1,0 +1,11 @@
+      *
+      * The following example checks that FIELD contains only the letters
+      * A to J. As a result, ARRAY=(876310) after the CHECKR operation.
+      * Indicator 90 turns on. %FOUND would return '1'.
+     D
+     D Array           S              1  0 DIM(6)
+     D Letter          C                   'ABCDEFGHIJ'
+     C
+     C                   MOVE      '1A=BC***'    Field             8
+     C     Letter        CHECKR    Field         Array                    90
+     C                   EVAL      *INLR = *ON

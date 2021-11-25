@@ -1,0 +1,20 @@
+     FPspohL0   UF   E           K DISK
+
+     C     Key           Klist
+     C                   Kfld                    Ohbncd
+     C                   Kfld                    Ohcnnb
+     C     KEY           DELETE(E) PSPOHL0
+     C                   IF        NOT %FOUND
+     C                   EXSR      Not_Found
+     C                   ENDIF
+      /FREE
+          DELETE KEY PSPOHL0;
+          IF NOT %FOUND;
+             EXSR Not_Found;
+          ENDIF;
+      /END-FREE
+     C                   EVAL      *INLR = *ON
+      *-------------------------------------------------------------------------
+     C     Not_Found     BegSr
+      *-------------------------------------------------------------------------
+     C                   EndSr

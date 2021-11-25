@@ -1,0 +1,32 @@
+     D FieldA          S              3A   INZ('123')
+     D FieldB          S              3A   INZ('1X4')
+     D FieldC          S              3A   INZ('004')
+     D FieldD          S              3A   INZ('   ')
+     D FieldE          S              4A   INZ(' 1 3')
+     D FieldF          S              3A   INZ(' 12')
+      *
+      * The field values are FieldA = 123, FieldB = 1X4, FieldC = 004,
+      * FieldD = bbb, FieldE = b1b3, and FieldF = b12.
+      *
+      * Indicator 21 is set on because FieldA contains all numeric
+      * characters.
+     C                   TESTN                   FieldA               21
+      * Indicator 22 is set on because FieldA contains all numeric
+      * characters. Indicators 23 and 24 remain off.
+     C                   TESTN                   FieldA               222324
+      * All indicators are off because FieldB does not contain valid
+      * numeric data.
+     C                   TESTN                   FieldB               252627
+      * Indicator 28 is set on because FieldC contains valid numeric data.
+      * Indicators 29 and 30 remain off.
+     C                   TESTN                   FieldC               282930
+      * Indicator 33 is set on because FieldD contains all blanks.
+      * Indicators 31 and 32 remain off.
+     C                   TESTN                   FieldD               313233
+      * Indicators 34, 35, and 36 remain off. Indicator 35 remains off
+      * off because FieldE contains a blank after a digit.
+     C                   TESTN                   FieldE               343536
+      * Indicator 38 is set on because FieldF contains leading blanks and
+      * valid numeric characters. Indicators 37 and 39 remain off.
+     C                   TESTN                   FieldF               373839
+     C                   EVAL      *INLR = *ON

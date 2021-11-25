@@ -1,0 +1,17 @@
+      /free
+       Dou Exit;
+         Exfmt ScreenRec;   // Panel displayed
+         If not exit;       // not exit
+           If Field_1 <> [valid value]; // Field 1 check
+             Message_F1 = *On;
+             Iter;
+           Endif;
+           If Field_2 <> [valid value]; // Field 2 check
+             Message_F2 = *On;
+             Iter;
+           Endif;
+
+           // Continue with other 10 fields to be checked
+           Endif;
+         Enddo;
+        /end-free

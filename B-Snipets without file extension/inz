@@ -1,0 +1,7 @@
+     h datfmt(*ymd)
+     d date1           s               d   datfmt(*mdy-) inz(d'12/10/30')
+      /free
+        // after initialization date1 = '10-30-12'
+         date1 = date1;
+      /end-free
+     C                   EVAL      *INLR = *ON

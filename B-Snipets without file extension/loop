@@ -1,0 +1,37 @@
+     FPspohL0   IF   E           K DISK
+     D Forever         S               N   Inz(*On)
+      *=========================================================================
+     C     Key           Klist
+     C                   Kfld                    Ohbncd
+     C                   Kfld                    Ohcnnb
+      *=========================================================================
+      * loop 1
+     C     Key           Setll     PspohL0
+     C                   Dow       Forever
+     C     Key           Reade     PspohL0
+     C                   If        %Eof(PspohL0)
+     C                   Leave
+     C                   EndIf
+     C                   EndDo
+      *=========================================================================
+      * loop 2
+     C     Key           Setll     PspohL0
+     C                   Dow       '1'
+     C     Key           Reade     PspohL0
+     C                   If        %Eof(PspohL0)
+     C                   Leave
+     C                   EndIf
+     C                   EndDo
+      *=========================================================================
+      * loop 3
+      /Free
+         Setll Key PspohL0;
+             Dow Forever;
+                 Reade Key PspohL0;
+                 If %Eof(PspohL0);
+                    Leave;
+                 EndIf;
+             EndDo;
+      /End-Free
+      *=========================================================================
+     C                   Move      *On           *InLr

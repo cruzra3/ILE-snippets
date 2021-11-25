@@ -1,0 +1,24 @@
+     D X               S              3  0
+     D Array           S              1    Dim(5)
+     D Total           S             10  0
+     D Field2          S              5  1 Inz(4.0)
+     D Field3          S              5  1 Inz(2.0)
+      /FREE
+         // In this example, the do loop will be repeated until the in03
+         // is on.
+         dou *in03;
+             *In03 = *On;
+         enddo;
+         // The following do loop will be repeated until *In01 is on
+         // or until FIELD2 is greater than FIELD3
+         dou *in01 or (Field2 > Field3);
+             *In01 = *On;
+         enddo;
+         // The following loop will be repeated until X is greater than
+         // the number of elements in Array
+         dou X > %elem (Array);
+             Total = Total + 1;
+             X = X + 1;
+         enddo;
+      /END-FREE
+     C                   EVAL      *INLR = *ON

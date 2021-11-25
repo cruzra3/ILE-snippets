@@ -1,0 +1,34 @@
+     D LOGONDATE       S               D
+     D DATE_STR        S             15
+     D MONTHS          S              8    DIM(12) CTDATA
+      * Move the job date to LOGONDATE. By default, LOGONDATE has an *ISO
+      * date format, which contains a 4-digit year. *DATE also contains a
+      * 4-digit year, but in a different format, *USA.
+     C     *USA          MOVE      *DATE         LOGONDATE
+      *
+      * Extract the month from a date field to a 2-digit field
+      * that is used as an index into a character array containing
+      * the names of the months. Then extract the day from the
+      * timestamp to a 2-byte character field which can be used in
+      * an EVAL concatenation expression to form a string.
+      * For example, if LOGONDATE is March 17, 1996, LOGMONTH will
+      * contain 03, LOGDAY will contain 17, and DATE_STR will contain
+      * 'March 17'.
+     C                   EXTRCT    LOGONDATE:*M  LOGMONTH          2 0
+     C                   EXTRCT    LOGONDATE:*D  LOGDAY            2
+     C                   EVAL      DATE_STR = %TRIMR(MONTHS(LOGMONTH))
+     C                                        + ' ' + LOGDAY
+     C                   SETON                                        LR
+** CTDATA MONTHS
+January
+February
+March
+April
+May
+June
+July
+August
+September
+October
+November
+December

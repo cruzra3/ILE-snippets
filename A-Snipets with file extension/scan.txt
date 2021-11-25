@@ -1,0 +1,52 @@
+     D Array           S              1S 0 Dim(20)
+     D Result          S              3  0
+     D POSITION        S              3  0
+      *
+      * The SCAN operation finds the substring 'ABC' starting in
+      * position 3 in factor 2; 3 is placed in the result field.
+      * Indicator 90 is set on because the string is found. Because
+      * no starting position is specified, the default of 1 is used.
+     C     'ABC'         SCAN      'XCABCD'      RESULT                   90
+      *
+      * This SCAN operation scans the string in factor 2 for an
+      * occurrence of the string in factor 1 starting at position 3.
+      * The 'Y' in position 1 of the base string is ignored because
+      * the scan operation starts from position 3.
+      * The operation places the values 5 and 6 in the first and
+      * second elements of the array. Indicator 90 is set on.
+     C
+     C                   MOVE      'YARRYY'      FIELD1            6
+     C                   MOVE      'Y'           FIELD2            1
+     C     FIELD2        SCAN      FIELD1:3      ARRAY                    90
+      *
+      * This SCAN operation scans the string in factor 2, starting
+      * at position 2, for an occurrence of the string in factor 1
+      * for a length of 4. Because 'TOOL' is not found in FIELD1,
+      * INT is set to zero and indicator 90 is set off.
+     C
+     C                   MOVE      'TESTING'     FIELD1X           7
+     C                   Z-ADD     2             X                 1 0
+     C                   MOVEL     'TOOL'        FIELD2X           5
+     C     FIELD2X:4     SCAN      FIELD1X:X     INT90             2 0
+     C
+      *
+      * The SCAN operation is searching for a name. When the name
+      * is found, %FOUND returns '1' so HandleLine is called.
+     C                   MOVE      'CARLOS'      Line              6
+     C                   MOVE      'CAR'         SrchName          3
+     C     SrchName      SCAN      Line
+     C                   IF        %FOUND
+     C                   EXSR      HandleLine
+     C                   ENDIF
+
+      * Scan with no indicators
+     C                   MOVE      'YARRYY'      FIELD1            6
+     C                   MOVE      'Y'           FIELD2            1
+     C     FIELD2:1      SCAN      FIELD1:3      POSITION
+     C                   IF        POSITION > 0
+     C                   EXSR      HandleLine
+     C                   ENDIF
+
+     C                   EVAL      *INLR = *ON
+     C     HandleLine    Begsr
+     C                   EndSr

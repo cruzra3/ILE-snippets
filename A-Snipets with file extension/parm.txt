@@ -1,0 +1,34 @@
+     d FIELDA          s              7
+     d FIELDB          s                   LIKE(FIELDA)
+     d FIELDC          s                   LIKE(FIELDA)
+     d FIELDD          s                   LIKE(FIELDA)
+     d FIELDE          s                   LIKE(FIELDA)
+     d FIELDG          s                   LIKE(FIELDA)
+      *
+      * In the calling program, the CALL operation calls PROG1 and
+      * allows PROG1 to access the data in the parameter list fields.
+     C                   CALL      'PROG1'       PLIST1
+      *
+      * In the second PARM statement, when CALL is processed, the
+      * contents of factor 2, *IN27, are placed in the result field,
+      * BYTE. When PROG1 returns control, the contents of the result
+      * field, BYTE, are placed in the factor 1 field, *IN30. Note
+      * that factor 1 and factor 2 entries on a PARM are optional.
+      *
+     C                   EVAL      *IN27 = *ON
+     C     PLIST1        PLIST
+     C                   PARM                    Amount            5 2
+     C     *IN30         PARM      *IN27         Byte              1
+      * In the called procedure, PROG2, *ENTRY in factor 1 of the
+      * PLIST statement identifies it as the entry parameter list.
+      * When control transfers to PROG2, the contents of the result
+      * fields (FieldC and FieldG) of the parameter list are placed in
+      * the factor 1 fields (FieldA and FieldD). When the called procedure
+      * returns, the contents of the factor 2 fields of the parameter
+      * list (FieldB and FieldE) are placed in the result fields (FieldC
+      * and FieldG). All of the fields are defined elsewhere in the
+      * procedure.
+     C     *ENTRY        PLIST
+     C     FieldA        PARM      FieldB        FieldC
+     C     FieldD        PARM      FieldE        FieldG
+     C                   EVAL      *INLR = *ON

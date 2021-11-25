@@ -1,0 +1,26 @@
+      * In this example, the result will be N=6, because the start
+      * position is 2 and the first nonnumeric character found is the '.'.
+      * The %FOUND built-in function is set to return '1', because some
+      * nonnumeric characters were found.
+      *
+     D N               S              3  0
+     D Salary          S              6
+     D Digits          C                   '0123456789'
+     D String          C                   '   TH'
+     C                   MOVE      '$2000.'      Salary
+     C     Digits        CHECK     Salary:2      N
+     C                   IF        %FOUND
+     C                   EXSR      NonNumeric
+     C                   ENDIF
+      *
+      * Because factor 1 is a blank, CHECK indicates the position
+      * of the first nonblank character. If STRING contains 'bbbth
+      * NUM will contain the value 4.
+      *
+     C
+     C     ' '           CHECK     String        Num               2 0
+     C                   EVAL      *INLR = *ON
+      *-------------------------------------------------------------------------
+     C     NonNumeric    BegSr
+      *-------------------------------------------------------------------------
+     C                   EndSr

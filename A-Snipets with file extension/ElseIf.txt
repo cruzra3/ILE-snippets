@@ -1,0 +1,11 @@
+     /free
+      If Option <7;
+        Exsr Addsubr;
+      Elseif Option = 8;
+        Exsr Chgsubr;
+      Elseif Option = 9;
+        Exsr Delsubr;
+      Else;
+        Exsr Errsubr;
+      Endif;
+	 /end-free 

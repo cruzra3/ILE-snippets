@@ -1,0 +1,29 @@
+     D* Define a named constant whose value is the lower case alphabet
+     DLower            C                   CONST('abcdefghijklmnop-
+     D                                     qrstuvwxyz')
+
+     D* A named constant can also be defined without the keyword CONST
+     DUPPER            C                   'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+     D* Define a numeric field size 20 with 12 decimal positions:
+     DMonthTotal       S             20 12
+
+      *Like
+     DMonthTotal3      S                   LIKE(MonthTotal)
+
+     D* Define the same field initialized to 0
+     DMonthTotal2      S             20 12 INZ
+
+     D* Define a date field and initialize it to 19th of June 1994
+     DDelv_date        S               D   INZ(D'1994-06-19')
+     D                                     DATFMT(*YMD)
+
+     D* Define a time field *ISO fmt
+     DDelv_time        S               T   INZ(T'12.00.00')
+
+     D* Define a field LIKE an existing one
+     DJanuary          S              5  2
+     DFebruary         S                   LIKE(January)
+     DTot_months       S             +2    LIKE(January)
+     DArmonths         S                   LIKE(January) DIM(12)
+     C                   Eval      *InLr = *On

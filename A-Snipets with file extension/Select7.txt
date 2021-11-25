@@ -1,0 +1,11 @@
+     /free
+      Select;
+        When Option <7;
+          Exsr Addsubr;
+        When Option = 8;
+          Exsr Chgsubr;
+        When Option = 9;
+          Exsr Delsubr;
+        Other;
+          Exsr Errsubr;
+      Endsl;

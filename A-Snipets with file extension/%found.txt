@@ -1,0 +1,20 @@
+    D Rec_Key          DS             LikeRec(File_C:*key)
+     * Assume File_C has key fields CustNo and Invno
+
+     /free
+      // Method 1, using the Rec_Key data structure
+      Rec_key.Custno = Arg_Cust;
+      Rec_key.Invno  = Arg_Inv;
+      Chain %kds(Rec_key) File_C;
+      If %found(FileC);
+        // Process found record here
+      Endif;
+
+      // Method 2, using a composite argument list
+      // No data structure or key list is needed
+      Chain (Arg_Cust:Arg_Inv) File_C;
+      If %found(File_C);
+        // Process found record here
+      Endif;
+
+     /end-free

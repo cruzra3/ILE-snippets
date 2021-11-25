@@ -1,0 +1,17 @@
+     D DS1             DS
+     D Num                     2      5  0
+     D Char                   20     30A
+     D
+     D MODS            DS                  OCCURS(2)
+     D Fld1                    1      5
+     D Fld2                    6     10  0
+      * In the following example, CLEAR sets all subfields in the data
+      * structure DS1 to their defaults, CHAR to blank, NUM to zero.
+      /FREE
+                         CLEAR                   DS1;
+       // In the following example, CLEAR sets all occurrences for the
+       // multiple occurrence data structure MODSto their default values
+       // Fld1 to blank, Fld2 to zero.
+                         CLEAR     *ALL          MODS;
+      /END-FREE
+     C                   EVAL      *INLR = *ON

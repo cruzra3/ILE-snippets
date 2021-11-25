@@ -1,0 +1,24 @@
+     /free
+      // Assume EmpMast has a three-part key:
+      // Company, Dept, and EmpNo.
+      // To check for existence of a specific record by
+      // key but without chaining:
+      Setll (Arg_Co:Arg_Dept:Arg_Empl) EmpMast;
+      If %equal(EmpMast);
+        // A specific employee record was found.
+      Endif;
+
+      // To determine whether at least one employee
+      // exists in a particular company and department
+      Setll (Arg_Co:Arg_Dept) EmpMast; // Set file pointer
+      If %equal(EmpMast);      // Check for existence
+        // An employee record was found.
+      Endif;
+
+      // To set the file pointer to the next dept
+      Setgt (Arg_Co:Arg_Dept) EmpMast;
+
+      // %found will return '1' after Setll or Setgt
+      // unless end-of-file is reached
+
+     /end-free

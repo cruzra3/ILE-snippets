@@ -1,0 +1,10 @@
+      * Example 2:
+      * This data structure is explicitly based on the *LDA using
+      * the DTAARA keyword. Since it is not a data area data
+      * structure, it must be handled using IN and OUT operations.
+      *
+     D LDA_DS          DS                  DTAARA(*LDA)
+     D SUBFLD                  1    600A
+     C                   IN        LDA_DS
+     C                   OUT       LDA_DS
+     C                   Eval      *InLr = *On

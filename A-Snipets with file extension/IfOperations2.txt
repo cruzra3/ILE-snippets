@@ -1,0 +1,8 @@
+      /free
+      If Status = 'A' and Amount > 100;
+        OK_Record = *On;
+        Total_Amount += Amount;
+      Else;
+        Count_No += 1;
+      Endif;
+     /end-free

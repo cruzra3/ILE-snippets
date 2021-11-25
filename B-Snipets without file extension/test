@@ -1,0 +1,67 @@
+     D
+     D Datefield       S               D    DATFMT(*JIS)
+     D Num_Date        S              6P 0  INZ(910921)
+     D Char_Time       S              8     INZ('13:05 PM')
+     D Char_Date       S              6     INZ('041596')
+     D Char_Tstmp      S             20     INZ('19960723140856834000')
+     D Char_Date2      S              9A    INZ('402/10/66')
+     D Char_Date3      S              8A    INZ('2120/115')
+     D Err             S              1
+      *
+      * Indicator 18 will not be set on, since the character field is a
+      * valid *ISO timestamp field, without separators.
+     C     *ISO0         TEST (Z)                Char_Tstmp             18
+      * Indicator 19 will not be set on, since the character field is a
+      * valid *MDY date, without separators.
+     C     *MDY0         TEST (D)                Char_Date              19
+     C                   If        %Error
+     C                   Eval      Err = 'Y'
+     C                   Else
+     C                   Eval      Err = 'N'
+     C                   EndIf
+      *
+      * %ERROR will return '1', since Num_Date is not *DMY.
+      *
+     C     *DMY          TEST (DE)               Num_Date
+     C                   If        %Error
+     C                   Eval      Err = 'Y'
+     C                   Else
+     C                   Eval      Err = 'N'
+     C                   EndIf
+      *
+      * No Factor 1 since result is a D data type field
+      * %ERROR will return '0', since the field
+      * contains a valid date
+     C
+     C                   TEST (E)                Datefield
+     C                   If        %Error
+     C                   Eval      Err = 'Y'
+     C                   Else
+     C                   Eval      Err = 'N'
+     C                   EndIf
+     C
+      * In the following test, %ERROR will return '1' since the
+      * Timefield does not contain a valid USA time.
+     C
+     C     *USA          TEST (ET)               Char_Time
+     C                   If        %Error
+     C                   Eval      Err = 'Y'
+     C                   Else
+     C                   Eval      Err = 'N'
+     C                   EndIf
+     C
+      * In the following test, indicator 20 will be set on since the
+      * character field is a valid *CMDY, but there are separators.
+     C
+     C     *CMDY0        TEST (D)                char_date2             20
+     C
+      * In the following test, %ERROR will return '0' since
+      * the character field is a valid *LONGJUL date.
+     C
+     C     *LONGJUL      TEST (DE)               char_date3
+     C                   If        %Error
+     C                   Eval      Err = 'Y'
+     C                   Else
+     C                   Eval      Err = 'N'
+     C                   EndIf
+     C                   Eval      *InLr = *On
